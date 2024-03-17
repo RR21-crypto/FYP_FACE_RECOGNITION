@@ -72,4 +72,10 @@ object FaceRecognitionUtils {
         }
         return Pair(bestScoreUserName, bestAvgScore)
     }
+
+    fun sayaganteng(){
+
+    }
+
+
 }
