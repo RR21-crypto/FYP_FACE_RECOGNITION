@@ -11,6 +11,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
@@ -77,6 +78,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         requestPermissions()
         //, oleh sebab  on create aktiv , itu langsung ada rquest permision , biar tahu user kasih izin atau gak.
+
+        binding.addButton.setOnClickListener{
+            binding.saveButton.visibility = View.VISIBLE
+            binding.nameEditText.visibility = View.VISIBLE
+            binding.addButton.visibility = View.GONE
+        }
+
         binding.saveButton.setOnClickListener{
             if (binding.nameEditText.text.toString().isNotEmpty()){
                 takePicture()
@@ -86,6 +94,29 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             faceRecognitionHelper.clearFace(this)
             Toast.makeText(this, "succes hapus", Toast.LENGTH_SHORT).show()
             true
+        }
+
+        binding.nameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                hideNameEditText()
+                if (binding.nameEditText.text.toString().isNotEmpty()) {
+                    binding.saveButton.visibility = View.VISIBLE
+                } else {
+                    binding.saveButton.visibility = View.GONE
+                }
+                binding.addButton.visibility = View.VISIBLE
+            }
+        }
+
+        binding.saveButton.visibility = View.GONE
+        binding.nameEditText.visibility = View.GONE
+
+    }
+
+    private fun hideNameEditText() {
+        if (binding.nameEditText.text.toString().isEmpty()) {
+            binding.nameEditText.visibility = View.GONE
+            binding.addButton.visibility = View.VISIBLE
         }
     }
 
