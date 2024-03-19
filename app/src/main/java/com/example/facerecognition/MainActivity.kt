@@ -108,6 +108,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
+        binding.saveButton.setOnClickListener {
+            if (binding.nameEditText.text.toString().isNotEmpty()) {
+                takePicture()
+                hideSaveButtonAndNameEditText()
+            }
+        }
+
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
 
@@ -119,6 +126,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             binding.addButton.visibility = View.VISIBLE
         }
     }
+
+    private fun hideSaveButtonAndNameEditText() {
+        binding.saveButton.visibility = View.GONE
+        binding.nameEditText.visibility = View.GONE
+        binding.addButton.visibility = View.VISIBLE
+    }
+
 
     private fun showText(name: String) {
        launch(Dispatchers.Main) {
