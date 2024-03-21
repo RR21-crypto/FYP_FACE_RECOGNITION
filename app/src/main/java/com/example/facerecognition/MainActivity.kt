@@ -25,6 +25,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.facerecognition.databinding.ActivityMainBinding
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -105,6 +106,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     binding.saveButton.visibility = View.GONE
                 }
                 binding.addButton.visibility = View.VISIBLE
+            }
+        }
+
+        binding.saveButton.setOnClickListener {
+            if (binding.nameEditText.text.toString().isNotEmpty()) {
+                takePicture()
+                hideSaveButtonAndNameEditText()
             }
         }
 
@@ -305,6 +313,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
             })
     }
+
+
+    // Bagian recyclereviewer
+
 
 
 
