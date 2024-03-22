@@ -41,6 +41,8 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
+
+
     private  val faceRecognitionHelper = FaceRecognitionHelper()
     private var isProcessing = false
     private lateinit var binding: ActivityMainBinding
@@ -144,7 +146,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun showText(name: String) {
        launch(Dispatchers.Main) {
            binding.logTextView.text = name
-
 
        }
     }
