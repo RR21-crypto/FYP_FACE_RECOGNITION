@@ -7,7 +7,7 @@
     tools:context=".RegisteredStudentList">
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/userListRecyclerView"
+        android:id="@+id/userList_rv"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:nestedScrollingEnabled="false"

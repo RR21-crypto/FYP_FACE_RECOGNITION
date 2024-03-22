@@ -109,19 +109,18 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
-        binding.saveButton.setOnClickListener {
-            if (binding.nameEditText.text.toString().isNotEmpty()) {
-                takePicture()
-                hideSaveButtonAndNameEditText()
-            }
-        }
+
 
         binding.saveButton.setOnClickListener {
             if (binding.nameEditText.text.toString().isNotEmpty()) {
                 takePicture()
                 hideSaveButtonAndNameEditText()
+            } else{
+                hideSaveButtonAndNameEditText()
             }
+
         }
+
 
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
@@ -145,6 +144,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun showText(name: String) {
        launch(Dispatchers.Main) {
            binding.logTextView.text = name
+
+
        }
     }
 
@@ -227,7 +228,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                                 showText(it?.first ?: "????")
                                isProcessing = false
                                 Log.w("RAY", "DEteCteD ${it?.first}")
+
                             }
+
                         }
                     }
                 }
@@ -299,7 +302,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         BitmapUtils.getBitmapFromUri(it, this@MainActivity) { bitmap ->
                             launch(Dispatchers.Default) {
                                 faceRecognitionHelper.registerFace(this@MainActivity, bitmap,binding.nameEditText.text.toString()){
-                                    Toast.makeText(this@MainActivity,"berhsil",Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@MainActivity,"Registered",Toast.LENGTH_LONG).show()
                                 }
                             }
 
@@ -308,8 +311,10 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(this@MainActivity,"Mohon Tunggu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity,"Please Wait", Toast.LENGTH_LONG).show()
                 }
+
+
 
             })
     }
