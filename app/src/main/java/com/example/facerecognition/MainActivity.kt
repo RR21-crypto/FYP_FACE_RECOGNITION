@@ -2,6 +2,7 @@ package com.example.facerecognition
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -122,6 +123,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
 
         }
+
+        binding.studentList.setOnClickListener {
+            val intent = Intent(this, RegisteredStudentList::class.java)
+            startActivity(intent)
+        }
+
+
 
 
         binding.saveButton.visibility = View.GONE
