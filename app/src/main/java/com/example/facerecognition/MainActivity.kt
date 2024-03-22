@@ -11,6 +11,7 @@ import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
+import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
@@ -24,6 +25,7 @@ import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
 import com.example.facerecognition.databinding.ActivityMainBinding
+
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -77,6 +79,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         requestPermissions()
         //, oleh sebab  on create aktiv , itu langsung ada rquest permision , biar tahu user kasih izin atau gak.
+
+        binding.addButton.setOnClickListener{
+            binding.saveButton.visibility = View.VISIBLE
+            binding.nameEditText.visibility = View.VISIBLE
+            binding.addButton.visibility = View.GONE
+        }
+
         binding.saveButton.setOnClickListener{
             if (binding.nameEditText.text.toString().isNotEmpty()){
                 takePicture()
@@ -89,11 +98,56 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             Toast.makeText(this, "succes hapus", Toast.LENGTH_SHORT).show()
             true
         }
+
+        binding.nameEditText.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                hideNameEditText()
+                if (binding.nameEditText.text.toString().isNotEmpty()) {
+                    binding.saveButton.visibility = View.VISIBLE
+                } else {
+                    binding.saveButton.visibility = View.GONE
+                }
+                binding.addButton.visibility = View.VISIBLE
+            }
+        }
+
+
+
+        binding.saveButton.setOnClickListener {
+            if (binding.nameEditText.text.toString().isNotEmpty()) {
+                takePicture()
+                hideSaveButtonAndNameEditText()
+            } else{
+                hideSaveButtonAndNameEditText()
+            }
+
+        }
+
+
+        binding.saveButton.visibility = View.GONE
+        binding.nameEditText.visibility = View.GONE
+
     }
+
+    private fun hideNameEditText() {
+        if (binding.nameEditText.text.toString().isEmpty()) {
+            binding.nameEditText.visibility = View.GONE
+            binding.addButton.visibility = View.VISIBLE
+        }
+    }
+
+    private fun hideSaveButtonAndNameEditText() {
+        binding.saveButton.visibility = View.GONE
+        binding.nameEditText.visibility = View.GONE
+        binding.addButton.visibility = View.VISIBLE
+    }
+
 
     private fun showText(name: String) {
        launch(Dispatchers.Main) {
            binding.logTextView.text = name
+
+
        }
     }
 
@@ -176,7 +230,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                                 showText(it?.first ?: "????")
                                isProcessing = false
                                 Log.w("RAY", "DEteCteD ${it?.first}")
+
                             }
+
                         }
                     }
                 }
@@ -248,7 +304,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         BitmapUtils.getBitmapFromUri(it, this@MainActivity) { bitmap ->
                             launch(Dispatchers.Default) {
                                 faceRecognitionHelper.registerFace(this@MainActivity, bitmap,binding.nameEditText.text.toString()){
-                                    Toast.makeText(this@MainActivity,"berhsil",Toast.LENGTH_LONG).show()
+                                    Toast.makeText(this@MainActivity,"Registered",Toast.LENGTH_LONG).show()
                                 }
                             }
 
@@ -257,11 +313,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 }
 
                 override fun onError(exception: ImageCaptureException) {
-                    Toast.makeText(this@MainActivity,"Mohon Tunggu", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this@MainActivity,"Please Wait", Toast.LENGTH_LONG).show()
                 }
+
+
 
             })
     }
+
+
+    // Bagian recyclereviewer
+
 
 
 
