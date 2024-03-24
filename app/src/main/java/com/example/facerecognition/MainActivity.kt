@@ -2,6 +2,7 @@ package com.example.facerecognition
 
 import android.Manifest
 import android.content.ContentValues
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -40,6 +41,8 @@ import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
+
+
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
     private var isProcessing = false
@@ -123,6 +126,13 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         }
 
+        binding.studentList.setOnClickListener {
+            val intent = Intent(this, RegisteredStudentList::class.java)
+            startActivity(intent)
+        }
+
+
+
 
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
@@ -146,7 +156,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun showText(name: String) {
        launch(Dispatchers.Main) {
            binding.logTextView.text = name
-
 
        }
     }
