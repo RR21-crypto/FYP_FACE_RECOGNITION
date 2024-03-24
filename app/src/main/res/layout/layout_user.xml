@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="16dp"
+    android:padding="8dp"
     xmlns:tools="http://schemas.android.com/tools">
 
 
@@ -23,17 +23,16 @@
             android:layout_margin="16dp"
             >
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/avatarImageView"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:src="@tools:sample/avatars"
-            />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/avatarImageView"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+                tools:src="@tools:sample/avatars" />
 
-        <TextView
+            <TextView
             android:id="@+id/usernameTextView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,19 +58,20 @@
             style="@style/contentText"
             />
 
-        <TextView
-
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:layout_marginStart="8dp"
-            app:layout_constraintStart_toEndOf="@id/avatarImageView"
-            app:layout_constraintBottom_toBottomOf="@id/avatarImageView"
-            tools:text="My name is Uhum"
-            style="@style/smallContentText"
-            />
+            <TextView
+                android:id="@+id/registerDateTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toEndOf="@id/avatarImageView"
+                app:layout_constraintBottom_toBottomOf="@id/avatarImageView"
+                tools:text="My name is Uhum"
+                style="@style/smallContentText"
+                />
 
         <ImageButton
+            android:id="@+id/deleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/sampah"
