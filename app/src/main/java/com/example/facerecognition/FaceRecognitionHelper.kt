@@ -11,7 +11,7 @@ class FaceRecognitionHelper {
     private  var isModelReady = false
     private val faceDetectionImpl = FaceDetectionImpl()
     private lateinit var faceRecognitionUtilityImpl: FaceRecognitionUtilityImpl
-    private val registeredFace = mutableListOf<Pair<String,FloatArray>>()
+    private val registeredFace = mutableListOf<RegisteredFace>()
     private val storageHelper = StorageHelper()
 
    fun init(context: Context){
@@ -80,7 +80,7 @@ class FaceRecognitionHelper {
                 val cropBitmap = BitmapUtils.cropImageFaceBitmapWithoutResize(frameBitmap,face.boundingBox)
                 val faceEmbedding = faceRecognitionUtilityImpl.getFaceEmbedding(cropBitmap)
                 Log.w("rayhan",faceEmbedding[0].size.toString())
-                registeredFace.add(Pair(name,faceEmbedding[0]))
+                registeredFace.add(RegisteredFace(name,faceEmbedding[0], date = ""))
                 storageHelper.registerFace(context, name, faceEmbedding[0])
                 listener.invoke(true)
             }else{

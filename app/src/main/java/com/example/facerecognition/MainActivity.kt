@@ -7,8 +7,6 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.util.Size
@@ -16,7 +14,6 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.camera.core.Camera
-import androidx.camera.core.CameraProvider
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
@@ -30,12 +27,8 @@ import com.example.facerecognition.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.lang.Exception
-import java.text.SimpleDateFormat
-import java.util.concurrent.Executor
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.coroutines.CoroutineContext
@@ -47,6 +40,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private  val faceRecognitionHelper = FaceRecognitionHelper()
     private var isProcessing = false
     private lateinit var binding: ActivityMainBinding
+
 // preview
 //    camera
 //    camera provider
@@ -64,6 +58,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private  lateinit var cameraExcecutor: ExecutorService
     private var job: Job = Job()
     override val coroutineContext: CoroutineContext = Dispatchers.Main + job
+
+
+
 
 // on create akan kerja waktu halaman muncul
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -98,7 +95,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         binding.saveButton.setOnLongClickListener {
             faceRecognitionHelper.clearFace(this)
-            Toast.makeText(this, "succes hapus", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "succes deleted", Toast.LENGTH_SHORT).show()
             true
         }
 
@@ -127,7 +124,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
         binding.studentList.setOnClickListener {
-            val intent = Intent(this, RegisteredStudentList::class.java)
+            val intent = Intent(this, FaceListActivity::class.java)
             startActivity(intent)
         }
 
@@ -136,6 +133,11 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
+
+
+
+
+
 
     }
 
@@ -332,7 +334,6 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
 
     // Bagian recyclereviewer
-
 
 
 
