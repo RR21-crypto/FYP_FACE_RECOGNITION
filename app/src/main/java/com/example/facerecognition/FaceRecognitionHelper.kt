@@ -3,6 +3,7 @@ package com.example.facerecognition
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
+import android.widget.Toast
 import com.google.mlkit.vision.common.InputImage
 
 
@@ -53,6 +54,7 @@ class FaceRecognitionHelper {
 
                 Log.w("rayhan",bestScoreUserName.first)
                 listener.invoke(bestScoreUserName)
+
             }else{
                 Log.w("rayhan","face not found")
                 listener.invoke(null)
