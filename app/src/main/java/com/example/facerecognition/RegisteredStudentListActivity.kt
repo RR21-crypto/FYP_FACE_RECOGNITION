@@ -43,7 +43,7 @@ class RegisteredStudentListActivity : AppCompatActivity() {
         binding.userListRv.layoutManager = LinearLayoutManager(this)
         val storageHelper = StorageHelper()
         val registeredFace = storageHelper.getRegisterFace(this)
-        val taskAdapter = RegisteredFaceAdapter(registeredFace)
+        val taskAdapter = RegisteredFaceAdapter(registeredFace,storageHelper,this)
         binding.userListRv.adapter = taskAdapter
     }
 }

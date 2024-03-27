@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
+import android.content.SharedPreferences
 
 class StorageHelper {
 
@@ -50,6 +51,26 @@ class StorageHelper {
     fun clearFace(context: Context){
         val sharedPreference = context.getSharedPreferences("Storage_Rayhan",Context.MODE_PRIVATE).edit()
         sharedPreference.clear()
-        sharedPreference.commit()
+        sharedPreference.apply()
+
+    }
+
+    fun specificDelete(context: Context, name: String) {
+        val sharedPreference = context.getSharedPreferences("Storage_Rayhan", Context.MODE_PRIVATE)
+
+        val allName = sharedPreference.getString("name", "") ?: ""
+
+        if (allName.isNotEmpty()) {
+            val names = allName.split("|")
+            val updatedNames = names.filterNot { it == name }
+            val updatedNameString = updatedNames.joinToString("|")
+
+            sharedPreference.edit().apply {
+                putString("name", updatedNameString)
+                remove(name)
+                remove("${name}_date")
+                apply()
+            }
+        }
     }
 }

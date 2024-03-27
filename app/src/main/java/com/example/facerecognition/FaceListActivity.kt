@@ -30,14 +30,13 @@ class FaceListActivity : AppCompatActivity() {
             Toast.makeText(this, "succes deleted", Toast.LENGTH_SHORT).show()
             true
         }
-
     }
 
     private fun showRecyclerList() {
         binding.faceListRecyclerView.layoutManager = LinearLayoutManager(this)
         val storageHelper = StorageHelper()
         val registeredFace = storageHelper.getRegisterFace(this)
-        val taskAdapter = RegisteredFaceAdapter(registeredFace)
+        val taskAdapter = RegisteredFaceAdapter(registeredFace,storageHelper,this)
         binding.faceListRecyclerView.adapter = taskAdapter
     }
 }
