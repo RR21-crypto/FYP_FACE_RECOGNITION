@@ -93,11 +93,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         }
 
 
-        binding.saveButton.setOnLongClickListener {
-            faceRecognitionHelper.clearFace(this)
-            Toast.makeText(this, "succes deleted", Toast.LENGTH_SHORT).show()
-            true
-        }
+
 
         binding.nameEditText.setOnFocusChangeListener { _, hasFocus ->
             if (!hasFocus) {
