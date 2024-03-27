@@ -91,6 +91,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                 takePicture()
             }
         }
+
+
         binding.saveButton.setOnLongClickListener {
             faceRecognitionHelper.clearFace(this)
             Toast.makeText(this, "succes deleted", Toast.LENGTH_SHORT).show()
