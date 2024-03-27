@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FaceListActivity">
+    tools:context=".FaceListActivity"
+    android:background="@color/white">
 
 
     <ImageButton
@@ -32,14 +33,13 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/faceListRecyclerView"
         android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginTop="64dp"
+        android:layout_height="0dp"
         android:nestedScrollingEnabled="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/backButton"
         app:layout_constraintVertical_bias="0.0"
         tools:itemCount="10"
         tools:listitem="@layout/layout_user" />
