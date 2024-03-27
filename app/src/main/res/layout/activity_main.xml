@@ -37,7 +37,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColor="@color/white"
+                android:textStyle="bold"
                 android:textColorHint="@color/white"
                 android:textSize="14sp"
                 tools:ignore="MissingConstraints" />
@@ -87,9 +87,9 @@
         android:layout_height="48dp"
         android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
         android:layout_marginEnd="16dp"
-        android:background="@null"
+        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:src="@drawable/baseline_add_circle_24"
+        android:src="@drawable/tambah"
         app:layout_constraintEnd_toStartOf="@id/studentList"
         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -101,7 +101,7 @@
         android:layout_height="48dp"
         android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
         android:layout_marginEnd="16dp"
-        android:background="@null"
+        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
         android:src="@drawable/tambah"
         app:layout_constraintEnd_toStartOf="@id/studentList"
@@ -113,6 +113,7 @@
         android:layout_height="48dp"
         android:layout_marginEnd="8dp"
         android:layout_marginTop="@dimen/cardview_compat_inset_shadow"
+        android:background="@android:color/transparent"
         android:src="@drawable/list_wajah"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

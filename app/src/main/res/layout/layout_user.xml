@@ -12,7 +12,7 @@
         android:id="@+id/listRegistered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:backgroundTint="@color/white"
         app:cardCornerRadius="8dp"
         android:layout_margin="8dp"
         tools:ignore="MissingConstraints">
