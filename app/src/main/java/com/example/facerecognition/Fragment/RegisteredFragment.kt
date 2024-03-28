@@ -11,11 +11,10 @@ import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.R
 import com.example.facerecognition.StorageHelper
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
-import com.example.facerecognition.databinding.ActivityFaceListBinding
 import com.example.facerecognition.databinding.FragmentRegisteredBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
+
 
 class RegisteredFragment : Fragment() {
     private lateinit var binding: FragmentRegisteredBinding
