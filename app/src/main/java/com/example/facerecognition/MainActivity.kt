@@ -84,6 +84,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             binding.saveButton.visibility = View.VISIBLE
             binding.nameEditText.visibility = View.VISIBLE
             binding.addButton.visibility = View.GONE
+            binding.matricEditText.visibility = View.VISIBLE
+            binding.registerFace.visibility = View.VISIBLE
         }
 
         binding.saveButton.setOnClickListener{
@@ -107,6 +109,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             }
         }
 
+        binding.registerFace.setOnFocusChangeListener{ _, hasFocus ->
+            if (!hasFocus) {
+                hideNameEditText()
+                if (binding.nameEditText.text.toString().isNotEmpty()) {
+                    binding.saveButton.visibility = View.VISIBLE
+                } else {
+                    binding.saveButton.visibility = View.GONE
+                }
+                binding.addButton.visibility = View.VISIBLE
+            }
+        }
 
 
         binding.saveButton.setOnClickListener {
@@ -119,6 +132,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         }
 
+
         binding.studentList.setOnClickListener {
             val intent = Intent(this, FaceListActivity::class.java)
             startActivity(intent)
@@ -129,6 +143,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
+        binding.registerFace.visibility = View.GONE
 
 
 
@@ -140,6 +155,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private fun hideNameEditText() {
         if (binding.nameEditText.text.toString().isEmpty()) {
             binding.nameEditText.visibility = View.GONE
+            binding.matricEditText.visibility = View.GONE
+            binding.registerFace.visibility = View.GONE
             binding.addButton.visibility = View.VISIBLE
         }
     }
@@ -148,6 +165,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         binding.saveButton.visibility = View.GONE
         binding.nameEditText.visibility = View.GONE
         binding.addButton.visibility = View.VISIBLE
+        binding.matricEditText.visibility = View.GONE
+        binding.registerFace.visibility = View.GONE
     }
 
 

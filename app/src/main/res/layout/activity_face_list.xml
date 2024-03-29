@@ -15,7 +15,10 @@
         app:tabTextColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tabBackground="@color/maroon"
+        app:tabSelectedTextColor="@android:color/white"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"

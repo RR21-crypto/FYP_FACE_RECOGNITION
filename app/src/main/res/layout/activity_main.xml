@@ -17,29 +17,55 @@
 
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/registerFace"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/studentList"
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="10dp"
-        android:layout_marginTop="16dp">
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardBackgroundColor="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:background="@android:color/darker_gray"
+            android:layout_margin="8dp"
+            android:fadingEdge="none">
 
             <EditText
                 android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="4dp"
+                android:hint="Name"
+                android:lines="1"
+                android:maxLines="1"
+                android:singleLine="true"
+                android:textColorHint="@color/white"
+                android:textSize="14sp"
+                android:textStyle="bold"
+               app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="MissingConstraints" />
+
+            <EditText
+                android:id="@+id/matricEditText"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:hint="Name"
+                android:hint="Matric"
                 android:lines="1"
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textStyle="bold"
                 android:textColorHint="@color/white"
                 android:textSize="14sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/nameEditText"
+                android:layout_marginTop="8dp"
                 tools:ignore="MissingConstraints" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
