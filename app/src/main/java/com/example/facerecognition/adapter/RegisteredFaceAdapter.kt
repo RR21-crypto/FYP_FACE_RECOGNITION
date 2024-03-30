@@ -24,6 +24,7 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>,priv
         fun setData(registeredFace: RegisteredFace) {
             binding.usernameTextView.text = registeredFace.name
             binding.registerDateTextView.text = registeredFace.date
+            binding.matricNumberTextView.text = registeredFace.matric
         }
 
         val tvdelete : ImageButton = binding.deleteButton
@@ -42,7 +43,7 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>,priv
         val face  =  listStudent[position]
         holder.setData(face)
         holder.tvdelete.setOnClickListener{
-           storageHelper.specificDelete(context,face.name)
+            storageHelper.specificDelete(context,face.name)
             notifyItemRemoved(position)
         }
 

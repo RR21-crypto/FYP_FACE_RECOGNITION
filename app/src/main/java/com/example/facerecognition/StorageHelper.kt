@@ -5,21 +5,28 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.util.Date
 import android.content.SharedPreferences
+import androidx.room.util.joinIntoString
 
 class StorageHelper {
 
     private val dateFormat = SimpleDateFormat("yyyy MM dd HH:mm")
 
-    fun registerFace(context: Context,name :String, face:FloatArray){
+    fun registerFace(context: Context,name :String, face:FloatArray,matric : String){
         val sharedPreference = context.getSharedPreferences("Storage_Rayhan",Context.MODE_PRIVATE)
         val editor = sharedPreference.edit()
+        val nameList = sharedPreference.getString("name", "") ?: ""
         editor.putString(name,face.joinToString("|"))
         editor.putString("${name}_date", dateFormat.format(Date()))
+        editor.putString("${name}_matric", matric)
 //        {
 //            "rey": "10f|99f|...",
-//            "fikri": ".....",
-//            "name": "rey|fikri"
+//            "fikr ".....",
+////            "name":i": "rey|fikri"
 //        }
+
+        if (!nameList.contains(name)) {
+            editor.putString("name", "$nameList$name|")
+        }
 
         var allName = sharedPreference.getString("name","") ?:""
         allName += name + "|"
@@ -43,7 +50,8 @@ class StorageHelper {
 
                 val faceFloatArray = face.split("|").map { it.toFloat() }.toFloatArray()
                 val date = sharedPreference.getString("${name}_date", "Unknown Date") ?: "Unknown Date"
-                finalList.add(RegisteredFace(name, faceFloatArray, date = date))
+                val matric = sharedPreference.getString("${name}_matric","") ?: ""
+                finalList.add(RegisteredFace(name, faceFloatArray, date = date , matric = matric))
             }
         }
         return finalList
@@ -69,6 +77,7 @@ class StorageHelper {
                 putString("name", updatedNameString)
                 remove(name)
                 remove("${name}_date")
+                remove("${name}_matric")
                 apply()
             }
         }
