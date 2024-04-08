@@ -1,6 +1,7 @@
 package com.example.facerecognition
 
 import android.util.Log
+import com.example.facerecognition.Entity.RegisteredFace
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -23,18 +24,18 @@ object FaceRecognitionUtils {
             if (nameScoreHashmap[faceList[i].name] == null) {
                 val scores = ArrayList<Float>()
                 if (metricToBeUsed == "cosine") {
-                    scores.add(computeWithCosineSimilarity(subject, faceList[i].embedding))
+                    scores.add(computeWithCosineSimilarity(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
                 }
                 else {
-                    scores.add(computeWithL2Norm(subject, faceList[i].embedding))
+                    scores.add(computeWithL2Norm(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
                 }
                 nameScoreHashmap[faceList[i].name] = scores
             } else {
                 if (metricToBeUsed == "cosine") {
-                    nameScoreHashmap[faceList[i].name]?.add(computeWithCosineSimilarity(subject, faceList[i].embedding))
+                    nameScoreHashmap[faceList[i].name]?.add(computeWithCosineSimilarity(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
                 }
                 else {
-                    nameScoreHashmap[faceList[i].name]?.add(computeWithL2Norm(subject, faceList[i].embedding))
+                    nameScoreHashmap[faceList[i].name]?.add(computeWithL2Norm(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
                 }
             }
         }

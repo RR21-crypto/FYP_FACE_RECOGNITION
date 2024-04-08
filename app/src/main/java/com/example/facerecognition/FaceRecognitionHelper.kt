@@ -3,7 +3,7 @@ package com.example.facerecognition
 import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
-import android.widget.Toast
+import com.example.facerecognition.Entity.RegisteredFace
 import com.google.mlkit.vision.common.InputImage
 
 
@@ -66,7 +66,6 @@ class FaceRecognitionHelper {
         context: Context,
         frameBitmap: Bitmap,
         name : String,
-        matric : String,
         listener : (Boolean?)->Unit
     ) {
         if (isModelReady == false){
@@ -81,8 +80,8 @@ class FaceRecognitionHelper {
                 val cropBitmap = BitmapUtils.cropImageFaceBitmapWithoutResize(frameBitmap,face.boundingBox)
                 val faceEmbedding = faceRecognitionUtilityImpl.getFaceEmbedding(cropBitmap)
                 Log.w("rayhan",faceEmbedding[0].size.toString())
-                registeredFace.add(RegisteredFace(name,faceEmbedding[0], date = "", matric ))
-                storageHelper.registerFace(context, name, faceEmbedding[0],matric)
+                registeredFace.add(RegisteredFace(name,faceEmbedding[0].joinToString { ";" }, date = "", matric = ""))
+                storageHelper.registerFace(context, name, faceEmbedding[0], matric = "")
                 listener.invoke(true)
             }else{
                 Log.w("rayhan","face not found")
