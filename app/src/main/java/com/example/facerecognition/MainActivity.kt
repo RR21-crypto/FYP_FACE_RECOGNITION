@@ -329,7 +329,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     outputFileResults.savedUri?.let {
                         BitmapUtils.getBitmapFromUri(it, this@MainActivity) { bitmap ->
                             launch(Dispatchers.Default) {
-                                faceRecognitionHelper.registerFace(this@MainActivity, bitmap,binding.nameEditText.text.toString()){
+                                faceRecognitionHelper.registerFace(this@MainActivity, bitmap,binding.nameEditText.text.toString(),binding.matricEditText.text.toString()){
                                     Toast.makeText(this@MainActivity,"Registered",Toast.LENGTH_LONG).show()
                                 }
                             }
