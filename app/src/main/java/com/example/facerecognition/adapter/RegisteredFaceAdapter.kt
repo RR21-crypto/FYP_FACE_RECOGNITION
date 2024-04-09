@@ -2,20 +2,16 @@ package com.example.facerecognition.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.facerecognition.FaceRecognitionHelper
-import com.example.facerecognition.R
-import com.example.facerecognition.RegisteredFace
+import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.StorageHelper
 import com.example.facerecognition.databinding.LayoutUserBinding
-import java.util.jar.Attributes.Name
 
 
-class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>,private val storageHelper: StorageHelper,private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
+class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val storageHelper: StorageHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
 
@@ -24,8 +20,11 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>,priv
         fun setData(registeredFace: RegisteredFace) {
             binding.usernameTextView.text = registeredFace.name
             binding.registerDateTextView.text = registeredFace.date
-            binding.matricNumberTextView.text = registeredFace.matric
+            binding.matricNumber.text = registeredFace.matric
+
         }
+
+
 
         val tvdelete : ImageButton = binding.deleteButton
 
@@ -43,10 +42,12 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>,priv
         val face  =  listStudent[position]
         holder.setData(face)
         holder.tvdelete.setOnClickListener{
-            storageHelper.specificDelete(context,face.name)
+           storageHelper.specificDelete(context,face.name)
             notifyItemRemoved(position)
         }
 
     }
+
+
 
 }
