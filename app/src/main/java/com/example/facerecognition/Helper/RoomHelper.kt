@@ -39,4 +39,23 @@ class RoomHelper {
     }
 
 
+    suspend fun specificDelete(context: Context, name: String):Boolean {
+        val database = StudentDatabase.getDatabase(context)
+        val attendanceEntity = database.attendanceDao().getAttendanceByName(name)
+        if (attendanceEntity != null) {
+            database.attendanceDao().deleteAttendanceByName(attendanceEntity)
+        }
+        return true
+    }
+
+    suspend fun spesificRegisterDelete(context: Context,matrics: String):Boolean{
+        val database = StudentDatabase.getDatabase(context)
+        val studentEntity = database.attendanceDao().getStudentWithId(matrics)
+        if (studentEntity != null){
+            database.attendanceDao().deleteRegisterByName(studentEntity)
+        }
+
+        return true
+    }
+
 }

@@ -14,6 +14,10 @@ import com.example.facerecognition.Helper.RoomHelper
 
 import com.example.facerecognition.databinding.LayoutAttendantBinding
 import com.example.facerecognition.databinding.LayoutUserBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private val listStudent : List<AttendanceWithStudentEntity>, private val context: Context): RecyclerView.Adapter<AttendedFaceRegisterAdapter.ListViewHolder>(){
 
@@ -40,9 +44,20 @@ class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private va
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val face  =  listStudent[position]
         holder.setview(face)
-//        holder.tvdelete.setOnClickListener{
-//            roomHelper.specificDelete(context,face.name)
-//            notifyItemRemoved(position)
-//        }
+
+        holder.tvdelete.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                val success = roomHelper.specificDelete(context, name = face.attendanceEntity.studentMatrics)
+                if (success) {
+                    withContext(Dispatchers.Main) {
+                        notifyItemRemoved(position)
+                        notifyItemRangeChanged(position, listStudent.size)
+                    }
+                } else {
+                    // Show an error message
+                    return@launch
+                }
+            }
+        }
     }
 }

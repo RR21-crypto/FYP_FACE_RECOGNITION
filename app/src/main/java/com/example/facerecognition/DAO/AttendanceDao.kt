@@ -1,6 +1,7 @@
 package com.example.facerecognition.DAO
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.facerecognition.Entity.AttendanceEntity
@@ -31,6 +32,18 @@ interface AttendanceDao {
 
     @Query("SELECT*FROM attendant")
     suspend fun getAllAttendanceWithStudent(): List<AttendanceWithStudentEntity>
+
+    @Delete
+    suspend fun deleteAttendance(attendant: AttendanceEntity)
+
+    @Query("SELECT * FROM attendant WHERE student_matrics = :name")
+    suspend fun getAttendanceByName(name: String): AttendanceEntity?
+
+    @Delete
+    suspend fun deleteAttendanceByName(attendanceEntity: AttendanceEntity)
+
+    @Delete
+    suspend fun deleteRegisterByName(studentEntity: StudentEntity)
 
 
 }
