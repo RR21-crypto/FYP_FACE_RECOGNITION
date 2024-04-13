@@ -13,6 +13,7 @@ import android.util.Size
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -22,7 +23,9 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.databinding.ActivityMainBinding
+import com.example.facerecognition.dialog.AttendanceConfirmationDialog
 
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,9 +38,9 @@ import kotlin.coroutines.CoroutineContext
 
 class MainActivity : AppCompatActivity(), CoroutineScope {
 
-
-
-    private  val faceRecognitionHelper = FaceRecognitionHelper()
+    val dialogAttendanceConfirmation = AttendanceConfirmationDialog()
+    private var isDialogShown = false
+    private var faceRecognitionHelper = FaceRecognitionHelper()
     private var isProcessing = false
     private lateinit var binding: ActivityMainBinding
 
@@ -68,6 +71,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        faceRecognitionHelper = FaceRecognitionHelper()
+
         cameraExcecutor = Executors.newSingleThreadExecutor()
         // karna kamera kompleks sehingga di buat thread , yang mana thread dianalogikan pabrik dari sebuah produk,karna kompleks kita butuh buat thread yang baru
 
@@ -92,6 +97,8 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (binding.nameEditText.text.toString().isNotEmpty()){
                 takePicture()
             }
+
+
         }
 
 
@@ -145,7 +152,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         binding.nameEditText.visibility = View.GONE
         binding.registerFace.visibility = View.GONE
 
-
+        dialogAttendanceConfirmation.setOnTurnOffAttendanceModeListener {
+            binding.switchAttendance.isChecked = false
+        }
 
 
 
@@ -253,9 +262,12 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                         image.close()
                         launch(Dispatchers.Default) {
                             faceRecognitionHelper.recognizerFace(it){
-                                showText(it?.first ?: "????")
+                                showText(it?.first?.name ?: "Unknown")
                                isProcessing = false
                                 Log.w("RAY", "DEteCteD ${it?.first}")
+                                it?.let {
+                                    showAttendanceConfirmationDialog(it.first, it.second)
+                                }
 
                             }
 
@@ -345,6 +357,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
 
             })
+    }
+
+    private fun showAttendanceConfirmationDialog(registeredFace: RegisteredFace, score: Double) {
+        if (dialogAttendanceConfirmation.isVisible) return
+        if (binding.switchAttendance.isChecked == false) return
+
+        dialogAttendanceConfirmation.registeredFace = registeredFace
+        dialogAttendanceConfirmation.score = score
+        dialogAttendanceConfirmation.show(supportFragmentManager.beginTransaction(), "DIALOG_CONFIRMATION")
     }
 
 

@@ -13,6 +13,6 @@ data class AttendanceWithStudentEntity (
         parentColumn = "student_matrics",
         entityColumn = "matric"
     )
-    val registeredFace: RegisteredFace
+    val studentEntity: StudentEntity
 
 )

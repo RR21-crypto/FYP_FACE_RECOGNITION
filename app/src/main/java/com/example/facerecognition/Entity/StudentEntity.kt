@@ -13,7 +13,7 @@ data class StudentEntity (
     @ColumnInfo(name = "embedding")
     val embedding : String,
     @ColumnInfo(name ="date")
-    val date : String,
+    val date : Long,
     @PrimaryKey
     @ColumnInfo(name = "matric")
     val matric : String,

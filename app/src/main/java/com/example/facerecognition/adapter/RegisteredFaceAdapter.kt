@@ -7,11 +7,12 @@ import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
 import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.Entity.RegisteredFace
-import com.example.facerecognition.StorageHelper
+import com.example.facerecognition.Helper.RoomHelper
+
 import com.example.facerecognition.databinding.LayoutUserBinding
 
 
-class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val storageHelper: StorageHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
+class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val roomHelper: RoomHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
 
@@ -19,7 +20,7 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
 
         fun setData(registeredFace: RegisteredFace) {
             binding.usernameTextView.text = registeredFace.name
-            binding.registerDateTextView.text = registeredFace.date
+            binding.registerDateTextView.text = registeredFace.date.toString()
             binding.matricNumber.text = registeredFace.matric
 
         }
@@ -41,10 +42,10 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val face  =  listStudent[position]
         holder.setData(face)
-        holder.tvdelete.setOnClickListener{
-           storageHelper.specificDelete(context,face.name)
-            notifyItemRemoved(position)
-        }
+//        holder.tvdelete.setOnClickListener{
+//           storageHelper.specificDelete(context,face.name)
+//            notifyItemRemoved(position)
+//        }
 
     }
 

@@ -7,28 +7,37 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
+import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.R
-import com.example.facerecognition.StorageHelper
+
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
 import com.example.facerecognition.databinding.FragmentRegisteredBinding
-
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 class RegisteredFragment : Fragment() {
     private lateinit var binding: FragmentRegisteredBinding
     private val faceRecognitionHelper = FaceRecognitionHelper()
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = FragmentRegisteredBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        showRecyclerList()
-
+        CoroutineScope(Dispatchers.IO).launch {
+            showRecyclerList()
+        }
         binding.clearAllButton.setOnClickListener {
             faceRecognitionHelper.clearFace(requireContext())
             Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
@@ -36,11 +45,23 @@ class RegisteredFragment : Fragment() {
         }
     }
 
-    private fun showRecyclerList() {
+    private suspend fun showRecyclerList() {
         binding.faceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val storageHelper = StorageHelper()
-        val registeredFace = storageHelper.getRegisterFace(requireContext())
-        val taskAdapter = RegisteredFaceAdapter(registeredFace, storageHelper, requireContext())
-        binding.faceListRecyclerView.adapter = taskAdapter
+        val roomHelper = RoomHelper()
+        roomHelper.init(requireContext())
+        val registeredFace = roomHelper.getALLStudentList()
+        val mappedRegisteredStudnet = registeredFace.map {
+            RegisteredFace(
+                it.name,
+                it.embedding.split(";").map { it.toFloat() }.toFloatArray(),
+                it.date,
+                it.matric
+            )
+        }
+        withContext(Dispatchers.Main) {
+            val taskAdapter =
+                RegisteredFaceAdapter(mappedRegisteredStudnet, roomHelper, requireContext())
+            binding.faceListRecyclerView.adapter = taskAdapter
+        }
     }
 }

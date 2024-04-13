@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.annotation.StringRes
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.ViewPager2
+import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
 import com.example.facerecognition.adapter.SectionsPagerAdapter
 import com.example.facerecognition.databinding.ActivityFaceListBinding
@@ -31,7 +32,7 @@ class FaceListActivity : AppCompatActivity() {
         binding = ActivityFaceListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 //        binding.faceListRecyclerView
-        showRecyclerList()
+
 
         binding.backButton.setOnClickListener {
             this.finish()
@@ -53,10 +54,4 @@ class FaceListActivity : AppCompatActivity() {
 
     }
 
-    private fun showRecyclerList() {
-//        binding.faceListRecyclerView.layoutManager = LinearLayoutManager(this)
-//        val storageHelper = StorageHelper()
-//        val registeredFace = storageHelper.getRegisterFace(this)
-//        val taskAdapter = RegisteredFaceAdapter(registeredFace,storageHelper,this)
-//        binding.faceListRecyclerView.adapter = taskAdapter
-    }
+

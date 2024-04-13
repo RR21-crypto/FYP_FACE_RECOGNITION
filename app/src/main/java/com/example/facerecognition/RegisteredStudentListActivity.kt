@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
 import com.example.facerecognition.databinding.ActivityRegisteredStudentListBinding
 
@@ -31,19 +32,19 @@ class RegisteredStudentListActivity : AppCompatActivity() {
         binding.userListRv.setHasFixedSize(true)
 
 
-        showRecyclerList()
-
-        val storageHelper = StorageHelper()
+//        showRecyclerList()
+//
+//        val storageHelper = StorageHelper()
 
     }
 
 
 
-    private fun showRecyclerList() {
-        binding.userListRv.layoutManager = LinearLayoutManager(this)
-        val storageHelper = StorageHelper()
-        val registeredFace = storageHelper.getRegisterFace(this)
-        val taskAdapter = RegisteredFaceAdapter(registeredFace,storageHelper,this)
-        binding.userListRv.adapter = taskAdapter
-    }
+//    private fun showRecyclerList() {
+//        binding.userListRv.layoutManager = LinearLayoutManager(this)
+//        val roomHelper = RoomHelper()
+//        val registeredFace = roomHelper.getAttendantList()
+//        val taskAdapter = RegisteredFaceAdapter(registeredFace,storageHelper,this)
+//        binding.userListRv.adapter = taskAdapter
+//    }
 }

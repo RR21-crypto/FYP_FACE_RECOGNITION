@@ -5,16 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 
-@Entity(tableName = "registeredstudent")
-data class RegisteredFace(
 
-    @ColumnInfo(name = "name")
+data class RegisteredFace(
     val name : String,
-    @ColumnInfo(name = "embedding")
-    val embedding : String,
-    @ColumnInfo(name ="date")
-    val date : String,
-    @PrimaryKey
-    @ColumnInfo(name = "matric")
+    val embedding : FloatArray,
+    val date : Long,
     val matric : String,
 )

@@ -21,21 +21,21 @@ object FaceRecognitionUtils {
         val nameScoreHashmap = HashMap<String, ArrayList<Float>>()
 
         for (i in faceList.indices) {
-            if (nameScoreHashmap[faceList[i].name] == null) {
+            if (nameScoreHashmap[faceList[i].matric] == null) {
                 val scores = ArrayList<Float>()
                 if (metricToBeUsed == "cosine") {
-                    scores.add(computeWithCosineSimilarity(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
+                    scores.add(computeWithCosineSimilarity(subject, faceList[i].embedding))
                 }
                 else {
-                    scores.add(computeWithL2Norm(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
+                    scores.add(computeWithL2Norm(subject, faceList[i].embedding))
                 }
-                nameScoreHashmap[faceList[i].name] = scores
+                nameScoreHashmap[faceList[i].matric] = scores
             } else {
                 if (metricToBeUsed == "cosine") {
-                    nameScoreHashmap[faceList[i].name]?.add(computeWithCosineSimilarity(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
+                    nameScoreHashmap[faceList[i].matric]?.add(computeWithCosineSimilarity(subject, faceList[i].embedding))
                 }
                 else {
-                    nameScoreHashmap[faceList[i].name]?.add(computeWithL2Norm(subject, faceList[i].embedding.split(";").map { it.toFloat() }.toFloatArray()))
+                    nameScoreHashmap[faceList[i].matric]?.add(computeWithL2Norm(subject, faceList[i].embedding))
                 }
             }
         }

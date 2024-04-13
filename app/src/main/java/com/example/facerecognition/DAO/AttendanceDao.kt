@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.example.facerecognition.Entity.AttendanceEntity
-import com.example.facerecognition.Entity.AttendanceWithStudent
+import com.example.facerecognition.Entity.AttendanceWithStudentEntity
 import com.example.facerecognition.Entity.StudentEntity
 
 @Dao
@@ -30,7 +30,7 @@ interface AttendanceDao {
     suspend fun getStudentWithId(matrics :String):StudentEntity?
 
     @Query("SELECT*FROM attendant")
-    suspend fun getAllAttendanceWithStudent(): List<AttendanceWithStudent>
+    suspend fun getAllAttendanceWithStudent(): List<AttendanceWithStudentEntity>
 
 
 }

@@ -5,23 +5,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.facerecognition.Entity.AttendanceEntity
+import com.example.facerecognition.Entity.AttendanceWithStudentEntity
+import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
-import com.example.facerecognition.RegisteredFace
-import com.example.facerecognition.StorageHelper
+import com.example.facerecognition.Helper.RoomHelper
+
+
 import com.example.facerecognition.databinding.LayoutAttendantBinding
 import com.example.facerecognition.databinding.LayoutUserBinding
 
-class AttendedFaceRegisterAdapter(private val storageHelper: StorageHelper,private val listStudent : List<RegisteredFace>,private val context: Context): RecyclerView.Adapter<AttendedFaceRegisterAdapter.ListViewHolder>(){
+class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private val listStudent : List<AttendanceWithStudentEntity>, private val context: Context): RecyclerView.Adapter<AttendedFaceRegisterAdapter.ListViewHolder>(){
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
 
     class ListViewHolder(private val binding:LayoutAttendantBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setview(registeredFace: RegisteredFace){
-            binding.attendUsernameTextView.text = registeredFace.name
-            binding.attendRegisterDateTextView.text = registeredFace.date
-            binding.attendMatricNumberTextView.text = registeredFace.matric
-
+        fun setview(attendance: AttendanceWithStudentEntity){
+            binding.attendUsernameTextView.text = attendance.studentEntity.name
+            binding.attendRegisterDateTextView.text = attendance.attendanceEntity.attendanceDate.toString()
+            binding.attendMatricNumberTextView.text = attendance.attendanceEntity.studentMatrics
         }
         val tvdelete : ImageButton = binding.attendDeleteButton
     }
@@ -37,9 +40,9 @@ class AttendedFaceRegisterAdapter(private val storageHelper: StorageHelper,priva
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val face  =  listStudent[position]
         holder.setview(face)
-        holder.tvdelete.setOnClickListener{
-            storageHelper.specificDelete(context,face.name)
-            notifyItemRemoved(position)
-        }
+//        holder.tvdelete.setOnClickListener{
+//            roomHelper.specificDelete(context,face.name)
+//            notifyItemRemoved(position)
+//        }
     }
 }

@@ -25,17 +25,12 @@ abstract class StudentDatabase : RoomDatabase() {
                     context.applicationContext,
                     StudentDatabase::class.java,
                     "student_database"
-                ).addMigrations(MIGRATION_1_2)
-                    .build()
+                ).build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        private val MIGRATION_1_2 = object : Migration(1, 2) {
-            override fun migrate(database: SupportSQLiteDatabase) {
-                database.execSQL("ALTER TABLE attendant ADD COLUMN time INTEGER NOT NULL DEFAULT 0")
-            }
-        }
+
     }
 }
