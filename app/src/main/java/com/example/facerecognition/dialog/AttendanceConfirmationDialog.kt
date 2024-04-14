@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.example.facerecognition.Entity.AttendanceEntity
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.Helper.RoomHelper
+import com.example.facerecognition.R
 import com.example.facerecognition.databinding.DialogAttendanceConfirmationBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +31,13 @@ class AttendanceConfirmationDialog() : DialogFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DialogAttendanceConfirmationBinding.inflate(inflater, container, false)
-        return binding.root
+        val dialogView = binding.root
+
+        // Set the background color
+        dialogView.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
+
+        return dialogView
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -72,5 +80,7 @@ class AttendanceConfirmationDialog() : DialogFragment() {
             }
         }
     }
+
+
 
 }

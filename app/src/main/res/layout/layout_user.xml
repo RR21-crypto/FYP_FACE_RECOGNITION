@@ -10,7 +10,7 @@
         android:id="@+id/listRegistered"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/white"
+        android:backgroundTint="@color/light_gray"
         app:cardCornerRadius="8dp"
         android:layout_margin="8dp"
         app:layout_constraintTop_toTopOf="parent"

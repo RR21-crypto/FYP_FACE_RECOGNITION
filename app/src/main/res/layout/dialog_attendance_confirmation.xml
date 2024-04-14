@@ -3,12 +3,18 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        android:backgroundTint="@color/light_gray">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
             android:id="@+id/textViewStudentName"
+            android:textStyle="bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
@@ -49,16 +55,20 @@
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
             android:text="Save Attendance"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/blue"
             app:layout_constraintTop_toBottomOf="@id/textViewProbability"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+
             />
 
-        <TextView
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonTurnOffAttendanceMode"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:textColor="@color/blue"
+            android:backgroundTint="@color/light_blue"
             android:textStyle="italic"
             app:layout_constraintTop_toBottomOf="@id/buttonSaveAttendance"
             app:layout_constraintStart_toStartOf="parent"
@@ -66,7 +76,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="32dp"
             android:layout_marginTop="8dp"
+            android:layout_marginHorizontal="16dp"
             android:text="Turn Off Attendance Mode"/>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
 </RelativeLayout>

@@ -25,12 +25,12 @@
         app:cardCornerRadius="10dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
-        app:cardBackgroundColor="@color/white">
+        app:cardBackgroundColor="@color/light_blue">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:color/darker_gray"
+            android:background="@android:color/transparent"
             android:layout_margin="8dp"
             android:fadingEdge="none">
 
@@ -38,7 +38,6 @@
                 android:id="@+id/nameEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:layout_marginTop="4dp"
                 android:hint="Name"
                 android:lines="1"
@@ -119,15 +118,28 @@
         app:layout_constraintEnd_toStartOf="@id/studentList"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <androidx.appcompat.widget.SwitchCompat
-        android:id="@+id/switchAttendance"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
 
-        app:switchPadding="8dp"
+    <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Attendance Mode"/>
+        app:cardCornerRadius="8dp"
+        tools:ignore="MissingConstraints"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="4dp"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@android:color/darker_gray">
+        <androidx.appcompat.widget.SwitchCompat
+            android:id="@+id/switchAttendance"
+            android:textColor="@color/light_gray"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:switchPadding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Attendance Mode"
+            android:layout_margin="4dp"/>
+    </androidx.cardview.widget.CardView>
 
     <ImageButton
         android:id="@+id/saveButton"
