@@ -18,23 +18,27 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private val listStudent : List<AttendanceWithStudentEntity>, private val context: Context): RecyclerView.Adapter<AttendedFaceRegisterAdapter.ListViewHolder>(){
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
 
+
     class ListViewHolder(private val binding:LayoutAttendantBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setview(attendance: AttendanceWithStudentEntity){
+        fun setview(attendance: AttendanceWithStudentEntity, dateFormat: SimpleDateFormat){
             binding.attendUsernameTextView.text = attendance.studentEntity.name
-            binding.attendRegisterDateTextView.text = attendance.attendanceEntity.attendanceDate.toString()
+            val formatDate = dateFormat.format(attendance.attendanceEntity.getAttendanceDateAsDate())
+            binding.attendRegisterDateTextView.text = formatDate
             binding.attendMatricNumberTextView.text = attendance.attendanceEntity.studentMatrics
         }
         val tvdelete : ImageButton = binding.attendDeleteButton
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-       return ListViewHolder(LayoutAttendantBinding.inflate(LayoutInflater.from(context),parent,false))
+        return ListViewHolder(LayoutAttendantBinding.inflate(LayoutInflater.from(context),parent,false))
     }
 
     override fun getItemCount(): Int {
@@ -43,7 +47,7 @@ class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private va
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val face  =  listStudent[position]
-        holder.setview(face)
+        holder.setview(face, SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
 
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {

@@ -3,7 +3,7 @@ package com.example.facerecognition.Entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-
+import java.util.Date
 
 
 data class RegisteredFace(
@@ -11,4 +11,8 @@ data class RegisteredFace(
     val embedding : FloatArray,
     val date : Long,
     val matric : String,
-)
+){
+    fun getDateAsDate(): Date {
+        return Date(date)
+    }
+}

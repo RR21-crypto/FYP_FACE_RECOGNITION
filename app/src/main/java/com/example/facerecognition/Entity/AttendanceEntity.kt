@@ -3,6 +3,7 @@ package com.example.facerecognition.Entity
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 @Entity(tableName = "attendant")
 data class AttendanceEntity(
@@ -12,4 +13,8 @@ data class AttendanceEntity(
     val studentMatrics: String,
     @ColumnInfo(name = "attendance_date")
     val attendanceDate: Long
-)
+){
+    fun getAttendanceDateAsDate(): Date {
+        return Date(attendanceDate)
+    }
+}

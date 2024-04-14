@@ -14,6 +14,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 
 class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val roomHelper: RoomHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
@@ -22,9 +24,10 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
 
     class ListViewHolder(private val binding: LayoutUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setData(registeredFace: RegisteredFace) {
+        fun setData(registeredFace: RegisteredFace,dateFormat: SimpleDateFormat) {
             binding.usernameTextView.text = registeredFace.name
-            binding.registerDateTextView.text = registeredFace.date.toString()
+            val formatDate = dateFormat.format(registeredFace.getDateAsDate())
+            binding.registerDateTextView.text = formatDate
             binding.matricNumber.text = registeredFace.matric
 
         }
@@ -45,7 +48,7 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
         val face  =  listStudent[position]
-        holder.setData(face)
+        holder.setData(face,SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val success = roomHelper.spesificRegisterDelete(context, matrics = face.matric)
