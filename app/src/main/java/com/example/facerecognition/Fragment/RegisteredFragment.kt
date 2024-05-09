@@ -61,7 +61,20 @@ class RegisteredFragment : Fragment() {
         withContext(Dispatchers.Main) {
             val taskAdapter =
                 RegisteredFaceAdapter(mappedRegisteredStudnet, roomHelper, requireContext())
+            taskAdapter.setOnItemClickCallback(object : RegisteredFaceAdapter.OnItemClickCallback {
+                override fun onItemClicked(data: RegisteredFace) {
+                    showSelectedStudent(data)
+                }
+            })
             binding.faceListRecyclerView.adapter = taskAdapter
         }
+
+
     }
+
+    private fun showSelectedStudent(registeredFace: RegisteredFace) {
+        val message = "You selected ${registeredFace.name}"
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
 }

@@ -21,6 +21,14 @@ import java.util.Locale
 class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val roomHelper: RoomHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
+    private lateinit var onItemClickCallback: OnItemClickCallback
+
+    fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
+        this.onItemClickCallback = onItemClickCallback
+    }
+
+
+
 
     class ListViewHolder(private val binding: LayoutUserBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -54,8 +62,13 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
                 val success = roomHelper.spesificRegisterDelete(context, matrics = face.matric)
                 if (success) {
                     withContext(Dispatchers.Main) {
+                        val newItems = ArrayList(listStudent)
+                        newItems.removeAt(position)
+
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, listStudent.size)
+
+
                     }
                 } else {
                     // Show an error message
@@ -64,6 +77,12 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
             }
         }
 
+        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listStudent[holder.adapterPosition]) }
+
+    }
+
+    interface OnItemClickCallback {
+        fun onItemClicked(data: RegisteredFace)
     }
 
 
