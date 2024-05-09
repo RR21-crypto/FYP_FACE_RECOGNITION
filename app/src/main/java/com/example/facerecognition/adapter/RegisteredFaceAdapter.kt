@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.example.facerecognition.Entity.AttendanceWithStudentEntity
 import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.Helper.RoomHelper
@@ -22,6 +23,7 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
     private lateinit var onItemClickCallback: OnItemClickCallback
+    private val listStudents : MutableList<RegisteredFace> = listStudent as MutableList<RegisteredFace>
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -51,22 +53,20 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
     }
 
     override fun getItemCount(): Int {
-        return listStudent.size;
+        return listStudents.size;
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val face  =  listStudent[position]
+        val face  =  listStudents[position]
         holder.setData(face,SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val success = roomHelper.spesificRegisterDelete(context, matrics = face.matric)
                 if (success) {
                     withContext(Dispatchers.Main) {
-                        val newItems = ArrayList(listStudent)
-                        newItems.removeAt(position)
-
+                        listStudents.removeAt(position)
                         notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, listStudent.size)
+                        notifyItemRangeChanged(position, listStudents.size)
 
 
                     }

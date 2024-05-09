@@ -49,4 +49,11 @@ interface AttendanceDao {
     suspend fun deleteRegisterByName(studentEntity: StudentEntity)
 
 
+    @Query("DELETE FROM attendant WHERE student_matrics = :matric")
+    suspend fun deleteAttendanceByMatric(matric: String)
+
+    @Query("DELETE FROM registeredstudent WHERE matric = :matric")
+    suspend fun deleteStudentByMatric(matric: String)
+
+
 }
