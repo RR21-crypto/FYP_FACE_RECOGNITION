@@ -19,11 +19,12 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val roomHelper: RoomHelper, private val context: Context): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
+class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, private val roomHelper: RoomHelper, private val context: Context,private val attendantList: List<AttendanceWithStudentEntity>): RecyclerView.Adapter<RegisteredFaceAdapter.ListViewHolder>() {
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
     private lateinit var onItemClickCallback: OnItemClickCallback
     private val listStudents : MutableList<RegisteredFace> = listStudent as MutableList<RegisteredFace>
+    private val attendantLists : MutableList<AttendanceWithStudentEntity> = attendantList as MutableList<AttendanceWithStudentEntity>
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
@@ -57,18 +58,20 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val face  =  listStudents[position]
-        holder.setData(face,SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
+        val face = listStudents[position]
+        holder.setData(face, SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
                 val success = roomHelper.spesificRegisterDelete(context, matrics = face.matric)
                 if (success) {
                     withContext(Dispatchers.Main) {
+                        val indexInAttendantList = attendantLists.indexOfFirst { it.attendanceEntity.studentMatrics == face.matric } // Change 3: Find the index of the corresponding item in the attendantList
+                        if (indexInAttendantList != -1) {
+                            attendantLists.removeAt(indexInAttendantList) // Change 4: Remove the corresponding item from the attendantList
+                        }
                         listStudents.removeAt(position)
                         notifyItemRemoved(position)
                         notifyItemRangeChanged(position, listStudents.size)
-
-
                     }
                 } else {
                     // Show an error message
@@ -78,8 +81,8 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
         }
 
         holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listStudent[holder.adapterPosition]) }
-
     }
+
 
     interface OnItemClickCallback {
         fun onItemClicked(data: RegisteredFace)

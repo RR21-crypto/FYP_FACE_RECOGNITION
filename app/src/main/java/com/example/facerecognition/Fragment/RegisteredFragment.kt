@@ -1,5 +1,6 @@
 package com.example.facerecognition.Fragment
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.facerecognition.Activity.DetailActivity
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.Helper.RoomHelper
@@ -50,6 +52,7 @@ class RegisteredFragment : Fragment() {
         val roomHelper = RoomHelper()
         roomHelper.init(requireContext())
         val registeredFace = roomHelper.getALLStudentList()
+        val attendantFace = roomHelper.getAttendantList()
         val mappedRegisteredStudnet = registeredFace.map {
             RegisteredFace(
                 it.name,
@@ -60,10 +63,13 @@ class RegisteredFragment : Fragment() {
         }
         withContext(Dispatchers.Main) {
             val taskAdapter =
-                RegisteredFaceAdapter(mappedRegisteredStudnet, roomHelper, requireContext())
+                RegisteredFaceAdapter(mappedRegisteredStudnet, roomHelper, requireContext(),attendantFace)
             taskAdapter.setOnItemClickCallback(object : RegisteredFaceAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: RegisteredFace) {
                     showSelectedStudent(data)
+                    val intentToDetail = Intent(requireContext() , DetailActivity::class.java)
+                    intentToDetail.putExtra("DATA", data)
+                    startActivity(intentToDetail)
                 }
             })
             binding.faceListRecyclerView.adapter = taskAdapter
@@ -76,5 +82,7 @@ class RegisteredFragment : Fragment() {
         val message = "You selected ${registeredFace.name}"
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
+
 
 }

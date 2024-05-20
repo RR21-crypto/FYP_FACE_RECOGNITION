@@ -67,6 +67,7 @@
     <color name="red">#FD596D</color>
     <color name="maroon">#800000</color>
     <color name="light_gray">#FAFAFA</color>
-    <color name="light_blue">#BBDAF3</color><!-- You can adjust the color code as needed -->
+    <color name="light_blue">#BBDAF3</color>
+    <color name="light_cream">#FFFFED</color><!-- You can adjust the color code as needed -->
 
 </resources>
