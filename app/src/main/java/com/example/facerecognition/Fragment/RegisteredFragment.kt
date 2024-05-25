@@ -22,7 +22,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class RegisteredFragment : Fragment() {
+class RegisteredFragment(
+    val onDeleteListener: () -> Unit
+) : Fragment() {
     private lateinit var binding: FragmentRegisteredBinding
     private val faceRecognitionHelper = FaceRecognitionHelper()
 
@@ -72,6 +74,9 @@ class RegisteredFragment : Fragment() {
                     startActivity(intentToDetail)
                 }
             })
+            taskAdapter.setOnDeleteListener {
+                onDeleteListener.invoke()
+            }
             binding.faceListRecyclerView.adapter = taskAdapter
         }
 

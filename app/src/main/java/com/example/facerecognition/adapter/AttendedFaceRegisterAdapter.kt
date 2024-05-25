@@ -51,18 +51,22 @@ class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private va
 
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val success = roomHelper.specificDelete(context, name = face.attendanceEntity.studentMatrics)
-                if (success) {
-                    withContext(Dispatchers.Main) {
-                        listStudents.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, listStudents.size)
-                    }
-                } else {
-                    // Show an error message
-                    return@launch
+                roomHelper.deleteRegister(matrics = face.attendanceEntity.studentMatrics )
+                withContext(Dispatchers.Main) {
+                    listStudents.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, listStudents.size)
                 }
+
+
             }
         }
     }
+
+    fun setNewList(list: List<AttendanceWithStudentEntity>) {
+        listStudents.clear()
+        listStudents.addAll(list)
+        notifyDataSetChanged()
+    }
 }
+

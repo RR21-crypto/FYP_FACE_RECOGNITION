@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.facerecognition.Database.StudentDatabase
 import com.example.facerecognition.Entity.RegisteredFace
@@ -28,7 +29,7 @@ class AttendClassFragment : Fragment() {
     private lateinit var binding: FragmentAttendClassBinding
     private val faceRecognitionHelper = FaceRecognitionHelper()
     private val roomHelper =RoomHelper()
-
+    private lateinit var adapter: AttendedFaceRegisterAdapter
 
 
 
@@ -41,7 +42,6 @@ class AttendClassFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val roomHelper = RoomHelper()
             roomHelper.init(requireContext())
 
             showRecyclerList()
@@ -70,14 +70,20 @@ class AttendClassFragment : Fragment() {
 
     }
 
+    fun refreshList() {
+        lifecycleScope.launch {
+            val registeredFace = roomHelper.getAttendantList()
+            adapter.setNewList(registeredFace)
+        }
+    }
+
     private suspend fun showRecyclerList() {
         binding.attendFaceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        val roomHelper = RoomHelper()
         roomHelper.init(requireContext())
         val registeredFace = roomHelper.getAttendantList()
         withContext(Dispatchers.Main) {
-            val taskAdapter = AttendedFaceRegisterAdapter(roomHelper, registeredFace, requireContext())
-            binding.attendFaceListRecyclerView.adapter = taskAdapter
+            adapter = AttendedFaceRegisterAdapter(roomHelper, registeredFace, requireContext())
+            binding.attendFaceListRecyclerView.adapter = adapter
         }
 
     }

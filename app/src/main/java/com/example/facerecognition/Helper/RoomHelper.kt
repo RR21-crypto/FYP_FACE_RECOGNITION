@@ -48,12 +48,10 @@ class RoomHelper {
     }
 
 
-    suspend fun specificDelete(context: Context, name: String):Boolean {
+    suspend fun specificDelete(context: Context, matrics: String):Boolean {
         val database = StudentDatabase.getDatabase(context)
-        val attendanceEntity = database.attendanceDao().getAttendanceByName(name)
-        if (attendanceEntity != null) {
-            database.attendanceDao().deleteAttendanceByName(attendanceEntity)
-        }
+         database.attendanceDao().deleteStudentByMatric(matrics)
+
         return true
     }
 
@@ -78,6 +76,12 @@ class RoomHelper {
         val date = Date(millis)
         val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
         return formatter.format(date)
+    }
+
+    suspend fun deleteRegister(matrics: String){
+        withContext(Dispatchers.IO){
+            attendanceDao.deleteAttendanceByMatric(matrics)
+        }
     }
 
 }

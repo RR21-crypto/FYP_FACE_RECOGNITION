@@ -8,18 +8,25 @@ import com.example.facerecognition.Fragment.AttendClassFragment
 import com.example.facerecognition.Fragment.RegisteredFragment
 
 class SectionsPagerAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
+
+    val registeredFragment = RegisteredFragment(onDeleteListener = { refreshAttendance() })
+    val attendanceFragment = AttendClassFragment()
+
     override fun getItemCount(): Int {
         return 2
     }
 
     override fun createFragment(position: Int): Fragment {
-        var fragment: Fragment? = null
-        when (position) {
-            0 -> fragment = RegisteredFragment()
-            1 -> fragment = AttendClassFragment()
+        return when (position) {
+            0 -> registeredFragment
+            1 -> attendanceFragment
+            else -> throw Exception("")
         }
-        return fragment as Fragment
     }
+
+    fun refreshAttendance() {
+        attendanceFragment.refreshList()
     }
+}
 
 

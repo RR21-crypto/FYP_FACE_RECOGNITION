@@ -25,11 +25,15 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
     private lateinit var onItemClickCallback: OnItemClickCallback
     private val listStudents : MutableList<RegisteredFace> = listStudent as MutableList<RegisteredFace>
     private val attendantLists : MutableList<AttendanceWithStudentEntity> = attendantList as MutableList<AttendanceWithStudentEntity>
+    private var setOnDeleteListener: (() -> Unit)? = null
 
     fun setOnItemClickCallback(onItemClickCallback: OnItemClickCallback) {
         this.onItemClickCallback = onItemClickCallback
     }
 
+    fun setOnDeleteListener(listener: () -> Unit) {
+        this.setOnDeleteListener = listener
+    }
 
 
 
@@ -62,21 +66,19 @@ class RegisteredFaceAdapter (private val listStudent : List<RegisteredFace>, pri
         holder.setData(face, SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                val success = roomHelper.spesificRegisterDelete(context, matrics = face.matric)
-                if (success) {
-                    withContext(Dispatchers.Main) {
-                        val indexInAttendantList = attendantLists.indexOfFirst { it.attendanceEntity.studentMatrics == face.matric } // Change 3: Find the index of the corresponding item in the attendantList
-                        if (indexInAttendantList != -1) {
-                            attendantLists.removeAt(indexInAttendantList) // Change 4: Remove the corresponding item from the attendantList
-                        }
-                        listStudents.removeAt(position)
-                        notifyItemRemoved(position)
-                        notifyItemRangeChanged(position, listStudents.size)
+                roomHelper.specificDelete(context, matrics = face.matric)
+                roomHelper.deleteRegister(matrics = face.matric )
+                withContext(Dispatchers.Main) {
+                    val indexInAttendantList = attendantLists.indexOfFirst { it.attendanceEntity.studentMatrics == face.matric } // Change 3: Find the index of the corresponding item in the attendantList
+                    if (indexInAttendantList != -1) {
+                        attendantLists.removeAt(indexInAttendantList) // Change 4: Remove the corresponding item from the attendantList
                     }
-                } else {
-                    // Show an error message
-                    return@launch
+                    listStudents.removeAt(position)
+                    notifyItemRemoved(position)
+                    notifyItemRangeChanged(position, listStudents.size)
+                    setOnDeleteListener?.invoke()
                 }
+
             }
         }
 
