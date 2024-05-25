@@ -46,6 +46,7 @@ class AttendClassFragment : Fragment() {
 
             showRecyclerList()
         }
+        
 
 //            binding.attendClearAllButton.setOnClickListener {
 //                roomHelper.clearAllAttendance(requireContext())
