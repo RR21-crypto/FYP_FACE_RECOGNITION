@@ -84,4 +84,13 @@ class RoomHelper {
         }
     }
 
+    suspend fun spesificAttendanceDelete(context: Context,matrics: String){
+        withContext(Dispatchers.IO){
+            val studentEntity = database.attendanceDao().getAttendanceByName(matrics)
+            if (studentEntity != null) {
+                StudentDatabase.getDatabase(context).attendanceDao().deleteAttendanceByName(studentEntity)
+            }
+        }
+    }
+
 }

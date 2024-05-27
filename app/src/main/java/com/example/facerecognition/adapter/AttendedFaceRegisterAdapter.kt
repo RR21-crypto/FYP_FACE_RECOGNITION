@@ -24,7 +24,8 @@ import java.util.Locale
 class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private val listStudent : List<AttendanceWithStudentEntity>, private val context: Context): RecyclerView.Adapter<AttendedFaceRegisterAdapter.ListViewHolder>(){
 
     private  val faceRecognitionHelper = FaceRecognitionHelper()
-    private val listStudents : MutableList<AttendanceWithStudentEntity> = listStudent as MutableList<AttendanceWithStudentEntity>
+    private val listStudents: MutableList<AttendanceWithStudentEntity> = listStudent.toMutableList()
+
 
     class ListViewHolder(private val binding:LayoutAttendantBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -46,21 +47,20 @@ class AttendedFaceRegisterAdapter(private val roomHelper: RoomHelper, private va
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-        val face  =  listStudents[position]
+        val face = listStudents[position]
         holder.setview(face, SimpleDateFormat("dd-MM-yyyy | HH:mm", Locale.getDefault()))
 
         holder.tvdelete.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
-                roomHelper.deleteRegister(matrics = face.attendanceEntity.studentMatrics )
-                withContext(Dispatchers.Main) {
+                roomHelper.spesificAttendanceDelete(context,face.attendanceEntity.studentMatrics)
+                withContext(Dispatchers.Main) { // <-- Highlighted
                     listStudents.removeAt(position)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, listStudents.size)
                 }
-
-
             }
         }
+
     }
 
     fun setNewList(list: List<AttendanceWithStudentEntity>) {

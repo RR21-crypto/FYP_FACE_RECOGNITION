@@ -33,8 +33,14 @@ class AttendClassFragment : Fragment() {
 
 
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAttendClassBinding.inflate(inflater, container, false)
+        binding.attendClearAllButton.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch{
+                roomHelper.deleteRegister("")
+            }
+        }
         return binding.root
     }
 
