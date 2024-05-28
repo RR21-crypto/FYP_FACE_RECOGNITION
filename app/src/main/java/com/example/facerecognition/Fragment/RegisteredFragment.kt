@@ -42,11 +42,11 @@ class RegisteredFragment(
         CoroutineScope(Dispatchers.IO).launch {
             showRecyclerList()
         }
-        binding.clearAllButton.setOnClickListener {
-            faceRecognitionHelper.clearFace(requireContext())
-            Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
-            true
-        }
+//        binding.clearAllButton.setOnClickListener {
+//            faceRecognitionHelper.clearFace(requireContext())
+//            Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
+//            true
+//        }
     }
 
     private suspend fun showRecyclerList() {

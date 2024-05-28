@@ -39,7 +39,11 @@ class AttendClassFragment : Fragment() {
         binding.attendClearAllButton.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch{
                 roomHelper.deleteRegister("")
+
             }
+            Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
+
+
         }
         return binding.root
     }

@@ -237,7 +237,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
 
         val cameraProvider = cameraProvider ?: throw IllegalStateException("camera initialization failed.")
 
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_FRONT).build()
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
 
         preview =// cuma buat objek preview
             Preview.Builder()
