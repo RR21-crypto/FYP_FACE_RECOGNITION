@@ -24,10 +24,11 @@
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/avatarImageView"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                android:src="@drawable/baseline_face_24"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
                 tools:src="@tools:sample/avatars" />
 

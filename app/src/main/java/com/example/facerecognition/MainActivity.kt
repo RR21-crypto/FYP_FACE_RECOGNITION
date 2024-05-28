@@ -43,8 +43,9 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     private var faceRecognitionHelper = FaceRecognitionHelper()
     private var isProcessing = false
     private lateinit var binding: ActivityMainBinding
+    private var lensFacing = CameraSelector.LENS_FACING_BACK
 
-// preview
+    // preview
 //    camera
 //    camera provider
 //    image capture
@@ -214,6 +215,15 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         requestMultiplePermission.launch(REQUIRED_PERMISSIONS.toTypedArray())
         //baris 75 hasil dari objek yang dibuat
 
+        binding.switchCameraButton.setOnClickListener {
+            lensFacing = if (lensFacing == CameraSelector.LENS_FACING_BACK) {
+                CameraSelector.LENS_FACING_FRONT
+            } else {
+                CameraSelector.LENS_FACING_BACK
+            }
+            bindCameraUseCases()
+        }
+
     }
 
     private fun setUpCamera() {
@@ -233,75 +243,62 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
     } // kuurng kurawal adalh tempat callback (normalnya).3
 
     private fun bindCameraUseCases() {
-        // CameraProvider
-
         val cameraProvider = cameraProvider ?: throw IllegalStateException("camera initialization failed.")
 
-        val cameraSelector = CameraSelector.Builder().requireLensFacing(CameraSelector.LENS_FACING_BACK).build()
+        val cameraSelector = CameraSelector.Builder().requireLensFacing(lensFacing).build() // Update this line
 
-        preview =// cuma buat objek preview
-            Preview.Builder()
-                .setTargetRotation(binding.viewFinder.display.rotation)
-                .build()
+        preview = Preview.Builder()
+            .setTargetRotation(binding.viewFinder.display.rotation)
+            .build()
 
         val imageFrameAnalysis = ImageAnalysis.Builder()
-            .setTargetResolution(Size(480,640))
+            .setTargetResolution(Size(480, 640))
             .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
             .setOutputImageFormat(ImageAnalysis.OUTPUT_IMAGE_FORMAT_RGBA_8888)
             .build()
-        imageFrameAnalysis.setAnalyzer(Executors.newSingleThreadExecutor(), object: ImageAnalysis.Analyzer{
+        imageFrameAnalysis.setAnalyzer(Executors.newSingleThreadExecutor(), object : ImageAnalysis.Analyzer {
             override fun analyze(image: ImageProxy) {
-                Log.w("VG-CHECK","frame received")
-                if (isProcessing){
+                Log.w("VG-CHECK", "frame received")
+                if (isProcessing) {
                     image.close()
                     return
-                }else{
+                } else {
                     isProcessing = true
 
-                    BitmapUtils.processBitmap(image){
+                    BitmapUtils.processBitmap(image) {
                         image.close()
                         launch(Dispatchers.Default) {
-                            faceRecognitionHelper.recognizerFace(it){
+                            faceRecognitionHelper.recognizerFace(it) {
                                 showText(it?.first?.name ?: "Unknown")
-                               isProcessing = false
+                                isProcessing = false
                                 Log.w("RAY", "DEteCteD ${it?.first}")
                                 it?.let {
                                     showAttendanceConfirmationDialog(it.first, it.second)
                                 }
-
                             }
-
                         }
                     }
                 }
-
-
-                // image.close buat nandain kalau kita sudah selesai memperoses gambar atau frame tersebut
             }
-
         })
 
-
-
-        val imageCaptureBuilder = ImageCapture.Builder()// objek buat ckrek foto
+        val imageCaptureBuilder = ImageCapture.Builder()
         imageCapture = imageCaptureBuilder
             .setCaptureMode(ImageCapture.CAPTURE_MODE_MINIMIZE_LATENCY)
             .build()
 
-        cameraProvider.unbindAll()//ini untuk hidarin eror
-        try{
-            // yang bawah ini akses  yang di  pasang ke kamera
+        cameraProvider.unbindAll()
+        try {
             camera = cameraProvider.bindToLifecycle(
                 this,
                 cameraSelector,
                 preview,
                 imageCapture,
                 imageFrameAnalysis
-
             )
-            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)// hasil preview sebelumnya disini baru di gabung dengan view finder di main_xml
-        }catch (exc : Exception) {
-            Log.e("VG-CHECK","use case binding failed", exc)
+            preview?.setSurfaceProvider(binding.viewFinder.surfaceProvider)
+        } catch (exc: Exception) {
+            Log.e("VG-CHECK", "use case binding failed", exc)
         }
     }
 
