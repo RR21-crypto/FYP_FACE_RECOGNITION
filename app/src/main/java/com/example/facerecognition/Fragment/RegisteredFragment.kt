@@ -50,7 +50,7 @@ class RegisteredFragment(
     }
 
     private suspend fun showRecyclerList() {
-        binding.faceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.faceListRecyclerView.layoutManager= LinearLayoutManager(requireContext())
         val roomHelper = RoomHelper()
         roomHelper.init(requireContext())
         val registeredFace = roomHelper.getALLStudentList()
@@ -69,10 +69,11 @@ class RegisteredFragment(
             taskAdapter.setOnItemClickCallback(object : RegisteredFaceAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: RegisteredFace) {
                     showSelectedStudent(data)
-                    val intentToDetail = Intent(requireContext() , DetailActivity::class.java)
+                    val intentToDetail = Intent(requireContext(), DetailActivity::class.java)
                     intentToDetail.putExtra("DATA", data)
                     startActivity(intentToDetail)
                 }
+
             })
             taskAdapter.setOnDeleteListener {
                 onDeleteListener.invoke()
@@ -87,6 +88,7 @@ class RegisteredFragment(
         val message = "You selected ${registeredFace.name}"
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
 
 
 

@@ -36,6 +36,7 @@
 
             <EditText
                 android:id="@+id/nameEditText"
+                android:textColor="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
@@ -43,7 +44,7 @@
                 android:lines="1"
                 android:maxLines="1"
                 android:singleLine="true"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/dark_gray"
                 android:textSize="14sp"
                 android:textStyle="bold"
                app:layout_constraintStart_toStartOf="parent"
@@ -52,6 +53,7 @@
 
             <EditText
                 android:id="@+id/matricEditText"
+                android:textColor="@color/white"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
@@ -60,7 +62,7 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textStyle="bold"
-                android:textColorHint="@color/white"
+                android:textColorHint="@color/dark_gray"
                 android:textSize="14sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/nameEditText"
@@ -129,7 +131,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginTop="4dp"
         android:layout_marginStart="8dp"
-        android:backgroundTint="@android:color/darker_gray">
+        android:backgroundTint="#80A9A9A9">
         <androidx.appcompat.widget.SwitchCompat
             android:id="@+id/switchAttendance"
             android:textColor="@color/light_gray"
@@ -139,7 +141,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Attendance Mode"
-            android:layout_margin="4dp"/>
+            android:layout_margin="4dp"
+            android:background="#80A9A9A9" />
     </androidx.cardview.widget.CardView>
 
     <ImageButton
