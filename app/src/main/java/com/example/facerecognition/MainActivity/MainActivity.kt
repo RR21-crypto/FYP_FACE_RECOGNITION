@@ -1,4 +1,4 @@
-package com.example.facerecognition
+package com.example.facerecognition.MainActivity
 
 import android.Manifest
 import android.content.ContentValues
@@ -13,7 +13,6 @@ import android.util.Size
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AlertDialog
 import androidx.camera.core.Camera
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -23,7 +22,10 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
+import com.example.facerecognition.BitmapUtils
 import com.example.facerecognition.Entity.RegisteredFace
+import com.example.facerecognition.FaceListActivity
+import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.databinding.ActivityMainBinding
 import com.example.facerecognition.dialog.AttendanceConfirmationDialog
 
@@ -338,8 +340,17 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
                     outputFileResults.savedUri?.let {
                         BitmapUtils.getBitmapFromUri(it, this@MainActivity) { bitmap ->
                             launch(Dispatchers.Default) {
-                                faceRecognitionHelper.registerFace(this@MainActivity, bitmap,binding.nameEditText.text.toString(),binding.matricEditText.text.toString()){
-                                    Toast.makeText(this@MainActivity,"Registered",Toast.LENGTH_LONG).show()
+                                faceRecognitionHelper.registerFace(
+                                    this@MainActivity,
+                                    bitmap,
+                                    binding.nameEditText.text.toString(),
+                                    binding.matricEditText.text.toString()
+                                ) {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Registered",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                             }
 

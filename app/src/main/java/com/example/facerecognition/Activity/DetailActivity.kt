@@ -8,16 +8,28 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.facerecognition.Entity.RegisteredFace
+import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.R
+import com.example.facerecognition.databinding.ActivityDetailBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class DetailActivity : AppCompatActivity() {
 
     lateinit var data: RegisteredFace
+    private lateinit var roomHelper: RoomHelper
+    private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_detail)
+        binding = ActivityDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        // Initialize RoomHelper
+        roomHelper = RoomHelper()
+        roomHelper.init(this)
 
         // Retrieve the RegisteredFace object from the intent extras
         val detailActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -29,11 +41,22 @@ class DetailActivity : AppCompatActivity() {
 
         if (detailActivity != null) {
             data = detailActivity
+
             // Now you can use the 'data' object to access the information sent from RegisteredFragment
             // For example, set the data to your views
-            findViewById<TextView>(R.id.detail_name).text = data.name
-            findViewById<TextView>(R.id.detail_matrics).text = data.matric
-            // Set other fields as needed
+            binding.detailName.text = data.name
+            binding.detailMatrics.text = data.matric
+
+            // Fetch and display attendance list
+            CoroutineScope(Dispatchers.IO).launch {
+                val attendants = roomHelper.getAttendantListByMatrics(data.matric)
+                withContext(Dispatchers.Main) {
+                    binding.detailAttendance.text = attendants.mapIndexed { index, it ->
+                        val formattedDate = roomHelper.convertMillisToDateTime(it.attendanceEntity.attendanceDate)
+                        "No ${index + 1}: Metric: ${it.attendanceEntity.studentMatrics} Date: $formattedDate"
+                    }.joinToString("\n")
+                }
+            }
         }
     }
 }

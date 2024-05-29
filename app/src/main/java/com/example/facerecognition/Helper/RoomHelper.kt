@@ -93,4 +93,9 @@ class RoomHelper {
         }
     }
 
+
+    suspend fun getAttendantListByMatrics(matrics: String): List<AttendanceWithStudentEntity> {
+        return database.attendanceDao().getAttendanceListByMatrics(matrics)
+    }
+
 }

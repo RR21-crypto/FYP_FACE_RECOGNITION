@@ -73,7 +73,8 @@
         tools:layout_editor_absoluteX="0dp"
         android:layout_marginTop="190dp"
         app:cardCornerRadius="32dp"
-        android:background="@color/white">
+        android:background="@color/white"
+        android:backgroundTint="@color/white">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="wrap_content"

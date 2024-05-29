@@ -56,4 +56,8 @@ interface AttendanceDao {
     suspend fun deleteStudentByMatric(matric: String)
 
 
+    @Query("SELECT * FROM attendant WHERE student_matrics = :matrics")
+    suspend fun getAttendanceListByMatrics(matrics: String): List<AttendanceWithStudentEntity>
+
+
 }

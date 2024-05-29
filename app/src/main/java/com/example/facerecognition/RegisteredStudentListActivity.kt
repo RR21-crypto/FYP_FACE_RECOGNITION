@@ -3,9 +3,7 @@ package com.example.facerecognition
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.facerecognition.Helper.RoomHelper
-import com.example.facerecognition.adapter.RegisteredFaceAdapter
+import com.example.facerecognition.MainActivity.MainActivity
 import com.example.facerecognition.databinding.ActivityRegisteredStudentListBinding
 
 class RegisteredStudentListActivity : AppCompatActivity() {
