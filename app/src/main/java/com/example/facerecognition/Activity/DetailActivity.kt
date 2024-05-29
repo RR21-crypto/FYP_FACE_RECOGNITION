@@ -52,8 +52,10 @@ class DetailActivity : AppCompatActivity() {
                 val attendants = roomHelper.getAttendantListByMatrics(data.matric)
                 withContext(Dispatchers.Main) {
                     binding.detailAttendance.text = attendants.mapIndexed { index, it ->
-                        val formattedDate = roomHelper.convertMillisToDateTime(it.attendanceEntity.attendanceDate)
-                        "No ${index + 1}: Metric: ${it.attendanceEntity.studentMatrics} Date: $formattedDate"
+                        val formattedDate = roomHelper.convertDate(it.attendanceEntity.attendanceDate)
+                        val formattedHour = roomHelper.convertHour(it.attendanceEntity.attendanceDate)
+//                        "No ${index + 1}: Metric: ${it.attendanceEntity.studentMatrics} Date: $formattedDate"
+                        "No ${index + 1}:  |      Date: $formattedDate  |    Hour : $formattedHour"
                     }.joinToString("\n")
                 }
             }

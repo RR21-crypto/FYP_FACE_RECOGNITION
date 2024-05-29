@@ -78,6 +78,18 @@ class RoomHelper {
         return formatter.format(date)
     }
 
+    fun convertDate(millis :Long): String{
+        val date = Date(millis)
+        val formatter = SimpleDateFormat("dd-MM-yyyy",Locale.getDefault())
+        return formatter.format(date)
+    }
+
+    fun convertHour(millis :Long): String{
+        val hour = Date(millis)
+        val formatter = SimpleDateFormat("HH:mm:ss",Locale.getDefault())
+        return formatter.format(hour)
+    }
+
     suspend fun deleteRegister(matrics: String){
         withContext(Dispatchers.IO){
             attendanceDao.deleteAttendanceByMatric(matrics)
