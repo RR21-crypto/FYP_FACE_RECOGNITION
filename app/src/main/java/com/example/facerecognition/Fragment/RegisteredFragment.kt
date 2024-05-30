@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView // <-- Highlighted
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.facerecognition.Activity.DetailActivity
 import com.example.facerecognition.Entity.RegisteredFace
@@ -21,12 +22,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-
 class RegisteredFragment(
     val onDeleteListener: () -> Unit
-) : Fragment() {
+) : Fragment(), SearchView.OnQueryTextListener { // <-- Highlighted
     private lateinit var binding: FragmentRegisteredBinding
     private val faceRecognitionHelper = FaceRecognitionHelper()
+    private lateinit var taskAdapter: RegisteredFaceAdapter // <-- Highlighted
+    private var registeredFaces = listOf<RegisteredFace>() // <-- Highlighted
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,11 +44,8 @@ class RegisteredFragment(
         CoroutineScope(Dispatchers.IO).launch {
             showRecyclerList()
         }
-//        binding.clearAllButton.setOnClickListener {
-//            faceRecognitionHelper.clearFace(requireContext())
-//            Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
-//            true
-//        }
+
+        binding.searchBar.setOnQueryTextListener(this) // <-- Highlighted
     }
 
     private suspend fun showRecyclerList() {
@@ -55,7 +54,7 @@ class RegisteredFragment(
         roomHelper.init(requireContext())
         val registeredFace = roomHelper.getALLStudentList()
         val attendantFace = roomHelper.getAttendantList()
-        val mappedRegisteredStudnet = registeredFace.map {
+        registeredFaces = registeredFace.map { // <-- Highlighted
             RegisteredFace(
                 it.name,
                 it.embedding.split(";").map { it.toFloat() }.toFloatArray(),
@@ -64,8 +63,7 @@ class RegisteredFragment(
             )
         }
         withContext(Dispatchers.Main) {
-            val taskAdapter =
-                RegisteredFaceAdapter(mappedRegisteredStudnet, roomHelper, requireContext(),attendantFace)
+            taskAdapter = RegisteredFaceAdapter(registeredFaces, roomHelper, requireContext(), attendantFace) // <-- Highlighted
             taskAdapter.setOnItemClickCallback(object : RegisteredFaceAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: RegisteredFace) {
                     showSelectedStudent(data)
@@ -73,15 +71,12 @@ class RegisteredFragment(
                     intentToDetail.putExtra("DATA", data)
                     startActivity(intentToDetail)
                 }
-
             })
             taskAdapter.setOnDeleteListener {
                 onDeleteListener.invoke()
             }
             binding.faceListRecyclerView.adapter = taskAdapter
         }
-
-
     }
 
     private fun showSelectedStudent(registeredFace: RegisteredFace) {
@@ -89,7 +84,15 @@ class RegisteredFragment(
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
+    override fun onQueryTextSubmit(query: String?): Boolean {
+        return false
+    }
 
-
-
+    override fun onQueryTextChange(newText: String?): Boolean { // <-- Highlighted
+        val filteredList = registeredFaces.filter { // <-- Highlighted
+            it.name.contains(newText ?: "", ignoreCase = true) // <-- Highlighted
+        }
+        taskAdapter.updateList(filteredList) // <-- Highlighted
+        return true // <-- Highlighted
+    }
 }

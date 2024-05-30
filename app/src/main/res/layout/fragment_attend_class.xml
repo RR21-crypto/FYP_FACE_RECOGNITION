@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/attendClearAllButton"
+        app:layout_constraintBottom_toBottomOf="@id/attendClearAllButton"
         android:nestedScrollingEnabled="false"
         tools:itemCount="10"
         tools:listitem="@layout/layout_attendant" />
@@ -27,6 +27,6 @@
         android:src="@drawable/baseline_delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-    
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

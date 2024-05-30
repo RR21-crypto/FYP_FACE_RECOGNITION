@@ -17,6 +17,7 @@
         app:tabIndicator="@android:color/transparent"
         app:tabBackground="@drawable/tab_background"
         app:tabIndicatorAnimationMode="elastic"
+        android:animateLayoutChanges="true"
         app:tabIndicatorGravity="stretch"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
