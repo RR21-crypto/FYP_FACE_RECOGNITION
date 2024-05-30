@@ -36,12 +36,13 @@ class AttendClassFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAttendClassBinding.inflate(inflater, container, false)
-        binding.attendClearAllButton.setOnClickListener {
+        binding.attendClearAllButton.setOnLongClickListener {
             CoroutineScope(Dispatchers.IO).launch{
                 roomHelper.deleteRegister("")
 
             }
             Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
+            true
 
 
         }

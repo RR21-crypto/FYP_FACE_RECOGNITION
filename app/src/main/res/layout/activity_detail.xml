@@ -63,6 +63,8 @@
 
     </androidx.cardview.widget.CardView>
 
+
+
     <androidx.cardview.widget.CardView
         android:id="@+id/bagian_bawah"
         android:layout_width="match_parent"

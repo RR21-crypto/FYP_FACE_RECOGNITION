@@ -30,6 +30,7 @@ class DetailActivity : AppCompatActivity() {
         // Initialize RoomHelper
         roomHelper = RoomHelper()
         roomHelper.init(this)
+        window.statusBarColor = resources.getColor(R.color.light_blue, theme)
 
         // Retrieve the RegisteredFace object from the intent extras
         val detailActivity = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -41,9 +42,6 @@ class DetailActivity : AppCompatActivity() {
 
         if (detailActivity != null) {
             data = detailActivity
-
-            // Now you can use the 'data' object to access the information sent from RegisteredFragment
-            // For example, set the data to your views
             binding.detailName.text = data.name
             binding.detailMatrics.text = data.matric
 

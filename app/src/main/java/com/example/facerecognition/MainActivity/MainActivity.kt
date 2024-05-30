@@ -26,6 +26,7 @@ import com.example.facerecognition.BitmapUtils
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceListActivity
 import com.example.facerecognition.FaceRecognitionHelper
+import com.example.facerecognition.R
 import com.example.facerecognition.databinding.ActivityMainBinding
 import com.example.facerecognition.dialog.AttendanceConfirmationDialog
 
@@ -79,7 +80,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
         cameraExcecutor = Executors.newSingleThreadExecutor()
         // karna kamera kompleks sehingga di buat thread , yang mana thread dianalogikan pabrik dari sebuah produk,karna kompleks kita butuh buat thread yang baru
 
-
+        window.statusBarColor = resources.getColor(R.color.light_blue, theme)
         // init face recognition helper
         launch(Dispatchers.Default) {
             faceRecognitionHelper.init(this@MainActivity)

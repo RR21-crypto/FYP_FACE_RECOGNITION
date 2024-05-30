@@ -70,5 +70,11 @@
     <color name="light_blue">#BBDAF3</color>
     <color name="light_cream">#FFFFED</color>
     <color name="dark_gray">#A9A9A9</color><!-- You can adjust the color code as needed -->
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="your_new_status_bar_color">#FF0000</color>
+
+
 
 </resources>
