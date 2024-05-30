@@ -67,14 +67,16 @@ class AttendClassFragment : Fragment() {
 //                }
 //            }
 
-            binding.attendClearAllButton.setOnClickListener {
+            binding.attendClearAllButton.setOnLongClickListener {
                 CoroutineScope(Dispatchers.IO).launch {
                     roomHelper.clearAllAttendance(requireContext())
                     withContext(Dispatchers.Main) {
                     // Update the RecyclerView
+                        Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
                     showRecyclerList()
                  }
                 }
+                true
 
             }
 
