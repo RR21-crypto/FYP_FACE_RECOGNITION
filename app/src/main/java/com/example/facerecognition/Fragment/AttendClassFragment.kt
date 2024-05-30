@@ -36,15 +36,17 @@ class AttendClassFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentAttendClassBinding.inflate(inflater, container, false)
-        binding.attendClearAllButton.setOnLongClickListener {
-            CoroutineScope(Dispatchers.IO).launch{
+
+        binding.attendClearAllButton.setOnClickListener {
+            CoroutineScope(Dispatchers.IO).launch {
                 roomHelper.deleteRegister("")
+                withContext(Dispatchers.IO){
+                    Toast.makeText(requireContext(), "Success deleted", Toast.LENGTH_SHORT).show()
 
+                }
+                Toast.makeText(context, "Success deleted", Toast.LENGTH_SHORT).show()
             }
-            Toast.makeText(requireContext(), "succes deleted", Toast.LENGTH_SHORT).show()
-            true
-
-
+        // Return true to indicate that the long click was handled
         }
         return binding.root
     }
@@ -57,7 +59,7 @@ class AttendClassFragment : Fragment() {
 
             showRecyclerList()
         }
-        
+
 
 //            binding.attendClearAllButton.setOnClickListener {
 //                roomHelper.clearAllAttendance(requireContext())
@@ -71,10 +73,11 @@ class AttendClassFragment : Fragment() {
                 CoroutineScope(Dispatchers.IO).launch {
                     roomHelper.clearAllAttendance(requireContext())
                     withContext(Dispatchers.Main) {
-                    // Update the RecyclerView
+                        Toast.makeText(requireContext(), "Success deleted", Toast.LENGTH_SHORT).show()
                     showRecyclerList()
                  }
                 }
+                true
 
             }
 
