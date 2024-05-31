@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".Fragment.RegisteredFragment">
 
-
-
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview_searchbar"
         android:layout_width="match_parent"
@@ -18,15 +16,17 @@
         android:backgroundTint="@color/light_gray"
         app:cardCornerRadius="8dp"
         android:layout_marginTop="8dp">
+
         <androidx.appcompat.widget.SearchView
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             android:layout_margin="8dp"
             app:circularflow_radiusInDP="8dp"
-            />
+            android:hint="@string/search_bar"
+            android:contextClickable="true"
+            style="@style/SearchViewStyle" />
     </androidx.cardview.widget.CardView>
-
 
     <!-- TODO: Update blank fragment layout -->
     <androidx.recyclerview.widget.RecyclerView
@@ -40,8 +40,5 @@
         android:nestedScrollingEnabled="false"
         tools:itemCount="10"
         tools:listitem="@layout/layout_user" />
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

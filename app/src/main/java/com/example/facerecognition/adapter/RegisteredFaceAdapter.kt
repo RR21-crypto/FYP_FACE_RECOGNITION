@@ -78,14 +78,16 @@ class RegisteredFaceAdapter(
             }
         }
 
-        holder.itemView.setOnClickListener { onItemClickCallback.onItemClicked(listStudent[holder.adapterPosition]) }
+        holder.itemView.setOnClickListener {
+            onItemClickCallback.onItemClicked(listStudents[holder.adapterPosition])
+        }
     }
 
     interface OnItemClickCallback {
         fun onItemClicked(data: RegisteredFace)
     }
 
-    fun updateList(newList: List<RegisteredFace>) { // <-- Highlighted
+    fun updateList(newList: List<RegisteredFace>) {
         listStudents.clear()
         listStudents.addAll(newList)
         notifyDataSetChanged()
