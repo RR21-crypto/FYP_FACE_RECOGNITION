@@ -25,6 +25,7 @@
             app:circularflow_radiusInDP="8dp"
             android:hint="@string/search_bar"
             android:contextClickable="true"
+            app:iconifiedByDefault="false"
             style="@style/SearchViewStyle" />
     </androidx.cardview.widget.CardView>
 
