@@ -1,5 +1,6 @@
 package com.example.facerecognition.sumarise
 
+import android.app.DatePickerDialog
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -15,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Locale
 
 class SummariseActivity : AppCompatActivity() {
@@ -27,7 +29,6 @@ class SummariseActivity : AppCompatActivity() {
         binding = ActivitySummariseBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // enableEdgeToEdge() // Hapus atau tambahkan definisi fungsi jika diperlukan
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -37,13 +38,51 @@ class SummariseActivity : AppCompatActivity() {
         roomHelper = RoomHelper()
         roomHelper.init(this)
 
+        binding.btnPickDate.setOnClickListener {
+            showDatePickerDialog()
+        }
+
+        binding.btnShowAll.setOnClickListener {
+            fetchAllAttendance()
+        }
+
+        // Fetch all attendance on initial load
+        fetchAllAttendance()
+    }
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, year, month, dayOfMonth ->
+                val selectedDate = Calendar.getInstance()
+                selectedDate.set(year, month, dayOfMonth)
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                val dateString = dateFormat.format(selectedDate.time)
+                fetchAttendanceForDate(dateString)
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+        datePickerDialog.show()
+    }
+
+    private fun fetchAllAttendance() {
         lifecycleScope.launch {
-            val sameDayAttendees = getSameDayAttendees()
-            setupRecyclerView(sameDayAttendees)
+            val allAttendees = getAllAttendees()
+            setupRecyclerView(allAttendees)
         }
     }
 
-    private suspend fun getSameDayAttendees(): List<SummariseItem> {
+    private fun fetchAttendanceForDate(date: String) {
+        lifecycleScope.launch {
+            val attendees = getAttendeesForDate(date)
+            setupRecyclerView(attendees)
+        }
+    }
+
+    private suspend fun getAllAttendees(): List<SummariseItem> {
         return withContext(Dispatchers.IO) {
             val attendanceList = roomHelper.getAttendantList()
             val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
@@ -52,12 +91,32 @@ class SummariseActivity : AppCompatActivity() {
             attendanceList.groupBy { attendance ->
                 dateFormat.format(attendance.attendanceEntity.attendanceDate)
             }.flatMap { (date, sameDayList) ->
-                listOf(SummariseItem.DateItem(date)) + sameDayList
-                    .distinctBy { it.studentEntity.matric }
+                listOf(SummariseItem.DateItem(date)) + sameDayList.distinctBy { it.studentEntity.matric }
                     .map {
                         val time = timeFormat.format(it.attendanceEntity.attendanceDate)
-                        SummariseItem.AttendeeItem(it.studentEntity.matric, it.studentEntity.name, time)
+                        SummariseItem.AttendeeItem(
+                            it.studentEntity.matric,
+                            it.studentEntity.name,
+                            time
+                        )
                     }
+            }
+        }
+    }
+
+    private suspend fun getAttendeesForDate(date: String): List<SummariseItem> {
+        return withContext(Dispatchers.IO) {
+            val attendanceList = roomHelper.getAttendantList()
+            val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
+
+            val filteredList = attendanceList.filter {
+                val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+                dateFormat.format(it.attendanceEntity.attendanceDate) == date
+            }.distinctBy { it.studentEntity.matric }
+
+            listOf(SummariseItem.DateItem(date)) + filteredList.map {
+                val time = timeFormat.format(it.attendanceEntity.attendanceDate)
+                SummariseItem.AttendeeItem(it.studentEntity.matric, it.studentEntity.name, time)
             }
         }
     }
