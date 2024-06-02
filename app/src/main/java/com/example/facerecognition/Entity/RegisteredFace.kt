@@ -13,6 +13,7 @@ data class RegisteredFace(
     val embedding : FloatArray,
     val date : Long,
     val matric : String,
+    val imageUri: String? = null
 ) : Parcelable {
     fun getDateAsDate(): Date {
         return Date(date)

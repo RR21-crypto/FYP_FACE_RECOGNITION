@@ -2,12 +2,16 @@ package com.example.facerecognition
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.net.Uri
 import android.util.Log
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.Entity.StudentEntity
 import com.example.facerecognition.Helper.RoomHelper
 import com.google.mlkit.vision.common.InputImage
 import kotlinx.coroutines.runBlocking
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 
 class FaceRecognitionHelper {
@@ -23,7 +27,7 @@ class FaceRecognitionHelper {
         faceRecognitionUtilityImpl.init()
         isModelReady = true
        roomHelper.init(context)
-        registeredFace.addAll(roomHelper.getALLStudentList().map { RegisteredFace(it.name,it.embedding.split(";").map { it.toFloat() }.toFloatArray(),it.date,it.matric) })
+        registeredFace.addAll(roomHelper.getALLStudentList().map { RegisteredFace(it.name,it.embedding.split(";").map { it.toFloat() }.toFloatArray(),it.date,it.matric, it.imageUri) })
     }
 
     suspend fun recognizerFace(
@@ -91,7 +95,13 @@ class FaceRecognitionHelper {
                 Log.w("rayhan",faceEmbedding[0].size.toString())
                 registeredFace.add(RegisteredFace(name,faceEmbedding[0], date = System.currentTimeMillis(), matric = matric))
                 runBlocking {
-                    roomHelper.insertStudent(StudentEntity(name = name, embedding = faceEmbedding[0].joinToString( ";" ), date = System.currentTimeMillis(),matric=matric))
+                    roomHelper.insertStudent(StudentEntity(
+                        name = name,
+                        embedding = faceEmbedding[0].joinToString( ";" ),
+                        date = System.currentTimeMillis(),
+                        matric = matric,
+                        imageUri = saveBitmapToExternalCacheDir("${name}_${matric}", cropBitmap, context)?.toString()
+                    ))
                     listener.invoke(true)
                 }
 
@@ -100,6 +110,37 @@ class FaceRecognitionHelper {
                 listener.invoke(false)
 
             }
+        }
+    }
+
+    fun saveBitmapToExternalCacheDir(studentName: String, bitmap: Bitmap, context: Context): Uri? {
+        val externalCacheDir = context.externalCacheDir
+
+        val fileName = "${studentName}.jpg"
+        if (externalCacheDir != null) {
+            // Create a file in the external cache directory with the specified filename
+            val file = File(externalCacheDir, fileName)
+
+            // Try to save the bitmap to the file
+            var fileOutputStream: FileOutputStream? = null
+            return try {
+                fileOutputStream = FileOutputStream(file)
+                // Compress and write the bitmap to the output stream
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+                Uri.fromFile(file)
+            } catch (e: IOException) {
+                e.printStackTrace()
+                null
+            } finally {
+                // Close the output stream
+                try {
+                    fileOutputStream?.close()
+                } catch (e: IOException) {
+                    e.printStackTrace()
+                }
+            }
+        } else {
+            return null
         }
     }
 

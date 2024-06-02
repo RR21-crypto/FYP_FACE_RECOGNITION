@@ -73,7 +73,8 @@ class RegisteredFragment(
                 it.name,
                 it.embedding.split(";").map { it.toFloat() }.toFloatArray(),
                 it.date,
-                it.matric
+                it.matric,
+                it.imageUri
             )
         }
         withContext(Dispatchers.Main) {

@@ -1,5 +1,6 @@
 package com.example.facerecognition.Activity
 
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.widget.TextView
@@ -7,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.bumptech.glide.Glide
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.R
@@ -44,6 +46,9 @@ class DetailActivity : AppCompatActivity() {
             data = detailActivity
             binding.detailName.text = data.name
             binding.detailMatrics.text = data.matric
+            data.imageUri?.let { uri ->
+                Glide.with(this).load(Uri.parse(uri)).into(binding.detailImage)
+            }
 
             // Fetch and display attendance list
             CoroutineScope(Dispatchers.IO).launch {
@@ -52,11 +57,11 @@ class DetailActivity : AppCompatActivity() {
                     binding.detailAttendance.text = attendants.mapIndexed { index, it ->
                         val formattedDate = roomHelper.convertDate(it.attendanceEntity.attendanceDate)
                         val formattedHour = roomHelper.convertHour(it.attendanceEntity.attendanceDate)
-//                        "No ${index + 1}: Metric: ${it.attendanceEntity.studentMatrics} Date: $formattedDate"
                         "No ${index + 1}:  |      Date: $formattedDate  |    Hour : $formattedHour"
                     }.joinToString("\n")
                 }
             }
         }
     }
+
 }

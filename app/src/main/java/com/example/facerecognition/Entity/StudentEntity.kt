@@ -17,4 +17,6 @@ data class StudentEntity (
     @PrimaryKey
     @ColumnInfo(name = "matric")
     val matric : String,
-    )
+    @ColumnInfo(name = "image_uri")
+    val imageUri : String?,
+)

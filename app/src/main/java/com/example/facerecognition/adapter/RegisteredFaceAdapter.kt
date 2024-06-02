@@ -1,10 +1,13 @@
 package com.example.facerecognition.adapter
 
 import android.content.Context
+import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageButton
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.facerecognition.Entity.AttendanceWithStudentEntity
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
@@ -45,6 +48,14 @@ class RegisteredFaceAdapter(
             val formatDate = dateFormat.format(registeredFace.getDateAsDate())
             binding.registerDateTextView.text = formatDate
             binding.matricNumber.text = registeredFace.matric
+            Log.w("RAY", "Uri: ${registeredFace.imageUri}")
+            registeredFace.imageUri?.let {
+                Uri.parse(it)?.let { uri ->
+                    Log.w("RAY", "Uri: ${uri}")
+                    Glide.with(binding.root.context).load(uri).into(binding.avatarImageView)
+                }
+            }
+
         }
 
         val tvdelete: ImageButton = binding.deleteButton

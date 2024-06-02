@@ -10,7 +10,7 @@ import com.example.facerecognition.DAO.AttendanceDao
 import com.example.facerecognition.Entity.AttendanceEntity
 import com.example.facerecognition.Entity.StudentEntity
 
-@Database(entities = [AttendanceEntity::class, StudentEntity::class], version = 2)
+@Database(entities = [AttendanceEntity::class, StudentEntity::class], version = 1)
 abstract class StudentDatabase : RoomDatabase() {
 
     abstract fun attendanceDao(): AttendanceDao
