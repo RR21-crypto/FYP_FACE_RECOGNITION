@@ -2,6 +2,7 @@ package com.example.facerecognition.sumarise
 
 import android.app.DatePickerDialog
 import android.os.Bundle
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -71,14 +72,18 @@ class SummariseActivity : AppCompatActivity() {
     private fun fetchAllAttendance() {
         lifecycleScope.launch {
             val allAttendees = getAllAttendees()
-            setupRecyclerView(allAttendees)
+            val totalStudents = getTotalStudents()
+            val itemsWithAttendanceInfo = addAttendanceInfoToItems(allAttendees, totalStudents)
+            setupRecyclerView(itemsWithAttendanceInfo)
         }
     }
 
     private fun fetchAttendanceForDate(date: String) {
         lifecycleScope.launch {
             val attendees = getAttendeesForDate(date)
-            setupRecyclerView(attendees)
+            val totalStudents = getTotalStudents()
+            val itemsWithAttendanceInfo = addAttendanceInfoToItems(attendees, totalStudents)
+            setupRecyclerView(itemsWithAttendanceInfo)
         }
     }
 
@@ -91,13 +96,14 @@ class SummariseActivity : AppCompatActivity() {
             attendanceList.groupBy { attendance ->
                 dateFormat.format(attendance.attendanceEntity.attendanceDate)
             }.flatMap { (date, sameDayList) ->
-                listOf(SummariseItem.DateItem(date)) + sameDayList.distinctBy { it.studentEntity.matric }
+                listOf(SummariseItem.DateItem(date, "")) + sameDayList.distinctBy { it.studentEntity.matric }
                     .map {
                         val time = timeFormat.format(it.attendanceEntity.attendanceDate)
                         SummariseItem.AttendeeItem(
                             it.studentEntity.matric,
                             it.studentEntity.name,
-                            time
+                            time,
+                            date
                         )
                     }
             }
@@ -114,16 +120,34 @@ class SummariseActivity : AppCompatActivity() {
                 dateFormat.format(it.attendanceEntity.attendanceDate) == date
             }.distinctBy { it.studentEntity.matric }
 
-            listOf(SummariseItem.DateItem(date)) + filteredList.map {
+            listOf(SummariseItem.DateItem(date, "")) + filteredList.map {
                 val time = timeFormat.format(it.attendanceEntity.attendanceDate)
-                SummariseItem.AttendeeItem(it.studentEntity.matric, it.studentEntity.name, time)
+                SummariseItem.AttendeeItem(it.studentEntity.matric, it.studentEntity.name, time, date)
             }
         }
+    }
+
+    private fun addAttendanceInfoToItems(items: List<SummariseItem>, totalStudents: Int): List<SummariseItem> {
+        val dateItems = items.filterIsInstance<SummariseItem.DateItem>()
+        val attendeeItems = items.filterIsInstance<SummariseItem.AttendeeItem>()
+
+        val updatedDateItems = dateItems.map { dateItem ->
+            val attendeesCount = attendeeItems.count { it.date == dateItem.date }
+            dateItem.copy(attendanceInfo = "Attendance: $attendeesCount/$totalStudents")
+        }
+
+        return updatedDateItems + attendeeItems
     }
 
     private fun setupRecyclerView(items: List<SummariseItem>) {
         val adapter = SummariseAdapter(items)
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         binding.recyclerView.adapter = adapter
+    }
+
+    private suspend fun getTotalStudents(): Int {
+        return withContext(Dispatchers.IO) {
+            roomHelper.getALLStudentList().size
+        }
     }
 }

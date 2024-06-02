@@ -7,8 +7,8 @@ import com.example.facerecognition.databinding.ItemSummariseBinding
 import com.example.facerecognition.databinding.ItemSummariseDateBinding
 
 sealed class SummariseItem {
-    data class DateItem(val date: String) : SummariseItem()
-    data class AttendeeItem(val matric: String, val name: String, val time: String) : SummariseItem()
+    data class DateItem(val date: String, val attendanceInfo: String) : SummariseItem()
+    data class AttendeeItem(val matric: String, val name: String, val time: String, val date: String) : SummariseItem()
 }
 
 class SummariseAdapter(private val items: List<SummariseItem>) :
@@ -40,7 +40,7 @@ class SummariseAdapter(private val items: List<SummariseItem>) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (val item = items[position]) {
-            is SummariseItem.DateItem -> (holder as DateViewHolder).bind(item.date)
+            is SummariseItem.DateItem -> (holder as DateViewHolder).bind(item.date, item.attendanceInfo)
             is SummariseItem.AttendeeItem -> (holder as AttendeeViewHolder).bind(item.matric, item.name, item.time)
         }
     }
@@ -49,8 +49,9 @@ class SummariseAdapter(private val items: List<SummariseItem>) :
 
     inner class DateViewHolder(private val binding: ItemSummariseDateBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(date: String) {
+        fun bind(date: String, attendanceInfo: String) {
             binding.dateText.text = date
+            binding.attendanceInfoText.text = attendanceInfo
         }
     }
 
