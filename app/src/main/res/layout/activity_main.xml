@@ -89,6 +89,7 @@
         android:id="@+id/cardTextView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/name_cardview"
             android:layout_width="match_parent"
             android:layout_height="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -181,6 +182,15 @@
         app:layout_constraintBottom_toTopOf="@id/cardTextView"
         android:layout_marginBottom="16dp"/>
 
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@id/cardTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:text="created by uhum"
+        android:layout_margin="16dp"/>
 
 
 
