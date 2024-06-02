@@ -17,6 +17,7 @@ import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.R
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
 import com.example.facerecognition.databinding.FragmentRegisteredBinding
+import com.example.facerecognition.sumarise.SummariseActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -48,6 +49,12 @@ class RegisteredFragment(
 
         binding.searchBar.setOnQueryTextListener(this)
         setSearchViewTextColor(binding.searchBar, Color.BLACK)
+
+        // Tambahkan listener untuk tombol summarise
+        binding.summarise.setOnClickListener {
+            val intentToSummarise = Intent(requireContext(), SummariseActivity::class.java)
+            startActivity(intentToSummarise)
+        }
     }
 
     private fun setSearchViewTextColor(searchView: SearchView, color: Int) {
