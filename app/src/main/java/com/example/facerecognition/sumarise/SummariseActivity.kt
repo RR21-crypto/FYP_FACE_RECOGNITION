@@ -28,6 +28,7 @@ class SummariseActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySummariseBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        window.statusBarColor = resources.getColor(R.color.white, theme)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
