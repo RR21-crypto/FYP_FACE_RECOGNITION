@@ -2,7 +2,6 @@ package com.example.facerecognition.sumarise
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -43,12 +42,8 @@ class SummariseActivity : AppCompatActivity() {
             showDatePickerDialog()
         }
 
-        binding.btnShowAll.setOnClickListener {
-            fetchAllAttendance()
-        }
-
-        // Fetch all attendance on initial load
-        fetchAllAttendance()
+        // Fetch the latest attendance on initial load
+        fetchLatestAttendance()
     }
 
     private fun showDatePickerDialog() {
@@ -69,12 +64,12 @@ class SummariseActivity : AppCompatActivity() {
         datePickerDialog.show()
     }
 
-    private fun fetchAllAttendance() {
+    private fun fetchLatestAttendance() {
         lifecycleScope.launch {
-            val allAttendees = getAllAttendees()
-            val totalStudents = getTotalStudents()
-            val itemsWithAttendanceInfo = addAttendanceInfoToItems(allAttendees, totalStudents)
-            setupRecyclerView(itemsWithAttendanceInfo)
+            val latestDate = getLatestAttendanceDate()
+            if (latestDate != null) {
+                fetchAttendanceForDate(latestDate)
+            }
         }
     }
 
@@ -87,26 +82,14 @@ class SummariseActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun getAllAttendees(): List<SummariseItem> {
+    private suspend fun getLatestAttendanceDate(): String? {
         return withContext(Dispatchers.IO) {
             val attendanceList = roomHelper.getAttendantList()
             val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
-            val timeFormat = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
 
-            attendanceList.groupBy { attendance ->
-                dateFormat.format(attendance.attendanceEntity.attendanceDate)
-            }.flatMap { (date, sameDayList) ->
-                listOf(SummariseItem.DateItem(date, "")) + sameDayList.distinctBy { it.studentEntity.matric }
-                    .map {
-                        val time = timeFormat.format(it.attendanceEntity.attendanceDate)
-                        SummariseItem.AttendeeItem(
-                            it.studentEntity.matric,
-                            it.studentEntity.name,
-                            time,
-                            date
-                        )
-                    }
-            }
+            attendanceList.map {
+                dateFormat.format(it.attendanceEntity.attendanceDate)
+            }.distinct().maxOrNull()
         }
     }
 

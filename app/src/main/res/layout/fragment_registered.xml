@@ -37,7 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/cardview_searchbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/summarise"
         android:nestedScrollingEnabled="false"
         tools:itemCount="10"
         tools:listitem="@layout/layout_user" />
