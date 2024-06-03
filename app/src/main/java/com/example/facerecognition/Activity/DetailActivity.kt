@@ -67,6 +67,9 @@ class DetailActivity : AppCompatActivity() {
                         val formattedHour = roomHelper.convertHour(it.attendanceEntity.attendanceDate)
                         "No ${index + 1}:  |      Date: $formattedDate  |    Hour : $formattedHour"
                     }.joinToString("\n")
+
+                    // Animate the attendance fields
+                    animateAttendanceFields()
                 }
             }
         }
@@ -101,12 +104,52 @@ class DetailActivity : AppCompatActivity() {
 
     private fun toggleEditFields() {
         if (isEditVisible) {
-            binding.editNameText.visibility = View.GONE
-            binding.editButton.visibility = View.GONE
+            binding.editNameText.animate()
+                .translationX(binding.editNameText.width.toFloat())
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction { binding.editNameText.visibility = View.GONE }
+            binding.editButton.animate()
+                .translationX(binding.editButton.width.toFloat())
+                .alpha(0f)
+                .setDuration(300)
+                .withEndAction { binding.editButton.visibility = View.GONE }
         } else {
             binding.editNameText.visibility = View.VISIBLE
+            binding.editNameText.alpha = 0f
+            binding.editNameText.translationX = binding.editNameText.width.toFloat()
+            binding.editNameText.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(300)
             binding.editButton.visibility = View.VISIBLE
+            binding.editButton.alpha = 0f
+            binding.editButton.translationX = binding.editButton.width.toFloat()
+            binding.editButton.animate()
+                .translationX(0f)
+                .alpha(1f)
+                .setDuration(300)
         }
         isEditVisible = !isEditVisible
+    }
+
+    private fun animateAttendanceFields() {
+        binding.detailAttendance.translationY = 100f
+        binding.detailAttendance.alpha = 0f
+        binding.detailAttendance.animate()
+            .translationY(0f)
+            .alpha(1f)
+            .setDuration(500)
+            .setStartDelay(300)
+            .start()
+
+        binding.detailOutattendance.translationY = 100f
+        binding.detailOutattendance.alpha = 0f
+        binding.detailOutattendance.animate()
+            .translationY(0f)
+            .alpha(1f)
+            .setDuration(500)
+            .setStartDelay(600)
+            .start()
     }
 }
