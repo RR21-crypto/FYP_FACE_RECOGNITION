@@ -29,7 +29,7 @@ class RegisteredFaceAdapter(
 
     private val faceRecognitionHelper = FaceRecognitionHelper()
     private lateinit var onItemClickCallback: OnItemClickCallback
-    private val listStudents: MutableList<RegisteredFace> = listStudent.toMutableList()
+    private val listStudents: MutableList<RegisteredFace> = listStudent.sortedBy { it.name }.toMutableList()
     private val attendantLists: MutableList<AttendanceWithStudentEntity> = attendantList.toMutableList()
     private var setOnDeleteListener: (() -> Unit)? = null
 
@@ -100,7 +100,7 @@ class RegisteredFaceAdapter(
 
     fun updateList(newList: List<RegisteredFace>) {
         listStudents.clear()
-        listStudents.addAll(newList)
+        listStudents.addAll(newList.sortedBy { it.name }) // Sort the list in ascending order by name
         notifyDataSetChanged()
     }
 }

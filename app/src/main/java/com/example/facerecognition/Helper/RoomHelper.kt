@@ -22,21 +22,18 @@ class RoomHelper {
         attendanceDao = database.attendanceDao()
     }
 
-
     suspend fun insertStudent(studentEntity: StudentEntity) {
         database.attendanceDao().insertStudent(studentEntity)
     }
 
-    suspend fun inserrAttendance(attendanceEntity: AttendanceEntity):Boolean{
+    suspend fun inserrAttendance(attendanceEntity: AttendanceEntity): Boolean {
         val studentExist = database.attendanceDao().getStudentWithId(attendanceEntity.studentMatrics)
-
-        return if(studentExist != null){
+        return if (studentExist != null) {
             database.attendanceDao().insertAttendant(attendanceEntity)
             true
-        }else{
+        } else {
             false
         }
-
     }
 
     suspend fun getALLStudentList(): List<StudentEntity> {
@@ -47,24 +44,20 @@ class RoomHelper {
         return database.attendanceDao().getAllAttendanceWithStudent()
     }
 
-
-    suspend fun specificDelete(context: Context, matrics: String):Boolean {
+    suspend fun specificDelete(context: Context, matrics: String): Boolean {
         val database = StudentDatabase.getDatabase(context)
-         database.attendanceDao().deleteStudentByMatric(matrics)
-
+        database.attendanceDao().deleteStudentByMatric(matrics)
         return true
     }
 
-    suspend fun spesificRegisterDelete(context: Context,matrics: String):Boolean{
+    suspend fun spesificRegisterDelete(context: Context, matrics: String): Boolean {
         val database = StudentDatabase.getDatabase(context)
         val studentEntity = database.attendanceDao().getStudentWithId(matrics)
-        if (studentEntity != null){
+        if (studentEntity != null) {
             database.attendanceDao().deleteRegisterByName(studentEntity)
         }
-
         return true
     }
-
 
     suspend fun clearAllAttendance(context: Context) {
         withContext(Dispatchers.IO) {
@@ -78,26 +71,26 @@ class RoomHelper {
         return formatter.format(date)
     }
 
-    fun convertDate(millis :Long): String{
+    fun convertDate(millis: Long): String {
         val date = Date(millis)
-        val formatter = SimpleDateFormat("dd-MM-yyyy",Locale.getDefault())
+        val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
         return formatter.format(date)
     }
 
-    fun convertHour(millis :Long): String{
+    fun convertHour(millis: Long): String {
         val hour = Date(millis)
-        val formatter = SimpleDateFormat("HH:mm:ss",Locale.getDefault())
+        val formatter = SimpleDateFormat("HH:mm:ss", Locale.getDefault())
         return formatter.format(hour)
     }
 
-    suspend fun deleteRegister(matrics: String){
-        withContext(Dispatchers.IO){
+    suspend fun deleteRegister(matrics: String) {
+        withContext(Dispatchers.IO) {
             attendanceDao.deleteAttendanceByMatric(matrics)
         }
     }
 
-    suspend fun spesificAttendanceDelete(context: Context,matrics: String){
-        withContext(Dispatchers.IO){
+    suspend fun spesificAttendanceDelete(context: Context, matrics: String) {
+        withContext(Dispatchers.IO) {
             val studentEntity = database.attendanceDao().getAttendanceByName(matrics)
             if (studentEntity != null) {
                 StudentDatabase.getDatabase(context).attendanceDao().deleteAttendanceByName(studentEntity)
@@ -105,9 +98,13 @@ class RoomHelper {
         }
     }
 
-
     suspend fun getAttendantListByMatrics(matrics: String): List<AttendanceWithStudentEntity> {
         return database.attendanceDao().getAttendanceListByMatrics(matrics)
     }
+
+    suspend fun updateStudentName(matric: String, name: String) {
+        attendanceDao.updateStudentName(matric, name)
+    }
+
 
 }

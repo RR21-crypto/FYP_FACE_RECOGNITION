@@ -9,7 +9,7 @@ import java.util.Date
 
 @Parcelize
 data class RegisteredFace(
-    val name : String,
+    var name : String,
     val embedding : FloatArray,
     val date : Long,
     val matric : String,

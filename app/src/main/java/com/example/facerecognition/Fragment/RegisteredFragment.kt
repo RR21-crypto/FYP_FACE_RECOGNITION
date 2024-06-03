@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.facerecognition.Activity.DetailActivity
 import com.example.facerecognition.Entity.RegisteredFace
@@ -55,6 +56,11 @@ class RegisteredFragment(
             val intentToSummarise = Intent(requireContext(), SummariseActivity::class.java)
             startActivity(intentToSummarise)
         }
+
+        // Tambahkan listener untuk tombol refresh
+        binding.refresh.setOnClickListener {
+            refreshBothFragments()
+        }
     }
 
     private fun setSearchViewTextColor(searchView: SearchView, color: Int) {
@@ -70,7 +76,6 @@ class RegisteredFragment(
     }
 
     private suspend fun showRecyclerList() {
-        binding.faceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         val roomHelper = RoomHelper()
         roomHelper.init(requireContext())
         val registeredFace = roomHelper.getALLStudentList()
@@ -83,8 +88,9 @@ class RegisteredFragment(
                 it.matric,
                 it.imageUri
             )
-        }
+        }.sortedBy { it.name } // Sort the list in ascending order by name
         withContext(Dispatchers.Main) {
+            binding.faceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
             taskAdapter = RegisteredFaceAdapter(registeredFaces, roomHelper, requireContext(), attendantFace)
             taskAdapter.setOnItemClickCallback(object : RegisteredFaceAdapter.OnItemClickCallback {
                 override fun onItemClicked(data: RegisteredFace) {
@@ -113,8 +119,21 @@ class RegisteredFragment(
     override fun onQueryTextChange(newText: String?): Boolean {
         val filteredList = registeredFaces.filter {
             it.name.contains(newText ?: "", ignoreCase = true)
-        }
+        }.sortedBy { it.name } // Sort filtered list by name
         taskAdapter.updateList(filteredList)
         return true
+    }
+
+    private fun refreshBothFragments() {
+        // Refresh the current fragment
+        CoroutineScope(Dispatchers.IO).launch {
+            withContext(Dispatchers.Main) {
+                showRecyclerList()
+            }
+        }
+
+        // Broadcast refresh action to AttendClassFragment
+        val intent = Intent("com.example.facerecognition.UPDATE_NAME")
+        LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
     }
 }
