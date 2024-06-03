@@ -1,9 +1,9 @@
 package com.example.facerecognition.Activity
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
@@ -21,6 +21,7 @@ class DetailActivity : AppCompatActivity() {
     lateinit var data: RegisteredFace
     private lateinit var roomHelper: RoomHelper
     private lateinit var binding: ActivityDetailBinding
+    private var isEditVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,30 +71,42 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        // Set up the edit button listener
+        // Hide the edit fields initially
+        binding.editNameText.visibility = View.GONE
+        binding.editButton.visibility = View.GONE
+
+        // Set click listener for the trigger button
+        binding.triggerEditButton.setOnClickListener {
+            toggleEditFields()
+        }
+
+        // Set click listener for the save button
         binding.editButton.setOnClickListener {
             val newName = binding.editNameText.text.toString()
             if (newName.isNotEmpty()) {
+                data.name = newName
+                binding.detailName.text = newName
+                // Update the name in the database
                 CoroutineScope(Dispatchers.IO).launch {
                     roomHelper.updateStudentName(data.matric, newName)
                     withContext(Dispatchers.Main) {
-                        binding.detailName.text = newName
-                        Toast.makeText(this@DetailActivity, "Name updated", Toast.LENGTH_SHORT).show()
-
-                        // Update local data
-                        data.name = newName
-
-                        // Return the result to RegisteredFragment
-                        val resultIntent = Intent().apply {
-                            putExtra("UPDATED_NAME", newName)
-                            putExtra("MATRIC", data)
-                        }
-                        setResult(RESULT_OK, resultIntent)
+                        Toast.makeText(this@DetailActivity, "Name updated successfully", Toast.LENGTH_SHORT).show()
                     }
                 }
             } else {
                 Toast.makeText(this, "Name cannot be empty", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun toggleEditFields() {
+        if (isEditVisible) {
+            binding.editNameText.visibility = View.GONE
+            binding.editButton.visibility = View.GONE
+        } else {
+            binding.editNameText.visibility = View.VISIBLE
+            binding.editButton.visibility = View.VISIBLE
+        }
+        isEditVisible = !isEditVisible
     }
 }
