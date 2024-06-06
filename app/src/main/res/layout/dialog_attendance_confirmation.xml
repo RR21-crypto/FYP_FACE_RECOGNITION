@@ -23,6 +23,8 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
+            android:textSize="16sp"
             />
 
         <TextView
@@ -34,6 +36,7 @@
             app:layout_constraintTop_toBottomOf="@id/textViewStudentName"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            android:textColor="@color/black"
             />
 
         <TextView
@@ -48,21 +51,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/buttonSaveAttendance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="32dp"
-            android:text="Save Attendance to clock in"
-            android:textColor="@color/white"
-            android:backgroundTint="@color/blue"
-            app:layout_constraintTop_toBottomOf="@id/textViewProbability"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
 
-            />
+         <com.google.android.material.button.MaterialButton
+             android:id="@+id/buttonSaveAttendance"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginHorizontal="16dp"
+             android:layout_marginTop="32dp"
+             android:backgroundTint="@color/pastel_coral"
+             android:text="Save Attendance to clock in"
+             android:textColor="@color/white"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/textViewProbability"
 
+             />
 
          <com.google.android.material.button.MaterialButton
              android:id="@+id/buttonclockoutfAttendanceMode"
@@ -71,9 +74,9 @@
              android:layout_marginHorizontal="16dp"
              android:layout_marginTop="8dp"
              android:layout_marginBottom="32dp"
-             android:backgroundTint="@color/light_blue"
+             android:backgroundTint="@color/blue"
              android:text="save attendace to clock out"
-             android:textColor="@color/blue"
+             android:textColor="@color/white"
              android:textStyle="italic"
              app:layout_constraintBottom_toBottomOf="parent"
              app:layout_constraintEnd_toEndOf="parent"
