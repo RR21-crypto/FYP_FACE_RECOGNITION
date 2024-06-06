@@ -13,7 +13,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.facerecognition"
-        minSdk = 23
+        minSdk = 26
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -97,5 +97,11 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
     implementation ("androidx.localbroadcastmanager:localbroadcastmanager:1.0.0")
     implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+
+    // Excel
+    implementation("org.apache.poi:poi:5.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
+
+
 
 }

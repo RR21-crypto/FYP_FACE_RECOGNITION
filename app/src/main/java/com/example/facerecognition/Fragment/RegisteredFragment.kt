@@ -1,7 +1,9 @@
 package com.example.facerecognition.Fragment
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -24,6 +26,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.reflect.Field
+import org.apache.poi.ss.usermodel.Workbook
+import org.apache.poi.xssf.usermodel.XSSFWorkbook
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.Locale
+import android.os.Environment
 
 class RegisteredFragment(
     val onDeleteListener: () -> Unit
@@ -60,6 +69,11 @@ class RegisteredFragment(
         // Tambahkan listener untuk tombol refresh
         binding.refresh.setOnClickListener {
             refreshBothFragments()
+        }
+
+        // Tambahkan listener untuk tombol export
+        binding.export.setOnClickListener {
+            checkSdkAndExportToExcel(requireContext())
         }
     }
 
@@ -135,5 +149,64 @@ class RegisteredFragment(
         // Broadcast refresh action to AttendClassFragment
         val intent = Intent("com.example.facerecognition.UPDATE_NAME")
         LocalBroadcastManager.getInstance(requireContext()).sendBroadcast(intent)
+    }
+
+    private fun checkSdkAndExportToExcel(context: Context) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Kode untuk mengekspor ke Excel
+            CoroutineScope(Dispatchers.IO).launch {
+                exportToExcel()
+            }
+        } else {
+            // Menampilkan toast jika versi SDK tidak didukung
+            Toast.makeText(context, "Fitur ini tidak didukung di versi Android ini", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private suspend fun exportToExcel() {
+        val roomHelper = RoomHelper()
+        roomHelper.init(requireContext())
+        val attendanceList = roomHelper.getAttendantList()
+
+        // Create a workbook
+        val workbook: Workbook = XSSFWorkbook()
+        val sheet = workbook.createSheet("Attendance")
+
+        // Create a header row
+        val headerRow = sheet.createRow(0)
+        headerRow.createCell(0).setCellValue("Name")
+        headerRow.createCell(1).setCellValue("Matric Number")
+        headerRow.createCell(2).setCellValue("Date")
+        headerRow.createCell(3).setCellValue("Time")
+        headerRow.createCell(4).setCellValue("Type")
+
+        // Create a date format
+        val dateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        // Populate the data rows
+        attendanceList.forEachIndexed { index, attendanceWithStudent ->
+            val row = sheet.createRow(index + 1)
+            row.createCell(0).setCellValue(attendanceWithStudent.studentEntity.name)
+            row.createCell(1).setCellValue(attendanceWithStudent.attendanceEntity.studentMatrics)
+
+            val date = attendanceWithStudent.attendanceEntity.getAttendanceDateAsDate()
+            row.createCell(2).setCellValue(dateFormat.format(date))
+
+            val time = attendanceWithStudent.attendanceEntity.getAttendanceDateAsDate()
+            row.createCell(3).setCellValue(SimpleDateFormat("HH:mm:ss", Locale.getDefault()).format(time))
+
+            row.createCell(4).setCellValue(attendanceWithStudent.attendanceEntity.type)
+        }
+
+        // Write the output to a file
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Attendance.xlsx")
+        FileOutputStream(file).use { outputStream ->
+            workbook.write(outputStream)
+            outputStream.close()
+        }
+
+        withContext(Dispatchers.Main) {
+            Toast.makeText(requireContext(), "Attendance exported to Excel", Toast.LENGTH_SHORT).show()
+        }
     }
 }
