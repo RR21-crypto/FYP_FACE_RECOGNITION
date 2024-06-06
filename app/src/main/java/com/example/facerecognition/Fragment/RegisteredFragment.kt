@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.Helper.RoomHelper
@@ -41,6 +42,7 @@ class RegisteredFragment(
     private val faceRecognitionHelper = FaceRecognitionHelper()
     private lateinit var taskAdapter: RegisteredFaceAdapter
     private var registeredFaces = listOf<RegisteredFace>()
+    private var scrollDy = 0
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +77,33 @@ class RegisteredFragment(
         binding.export.setOnClickListener {
             checkSdkAndExportToExcel(requireContext())
         }
+
+        // Set scroll listener
+        binding.faceListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (dy > 0) {
+                    // Scrolling down
+                    hideButtons()
+                } else if (dy < 0) {
+                    // Scrolling up
+                    showButtons()
+                }
+                scrollDy = dy
+            }
+        })
+    }
+
+    private fun hideButtons() {
+        binding.summarise.hide()
+        binding.refresh.hide()
+        binding.export.hide()
+    }
+
+    private fun showButtons() {
+        binding.summarise.show()
+        binding.refresh.show()
+        binding.export.show()
     }
 
     private fun setSearchViewTextColor(searchView: SearchView, color: Int) {
