@@ -58,4 +58,11 @@ interface AttendanceDao {
 
     @Query("UPDATE registeredstudent SET name = :name WHERE matric = :matric")
     suspend fun updateStudentName(matric: String, name: String)
+
+    @Insert
+    suspend fun insertAttendance(attendance: AttendanceEntity)
+
+    @Query("SELECT * FROM attendant WHERE student_matrics = :studentMatrics")
+    suspend fun getAttendantListByMatrics(studentMatrics: String): List<AttendanceEntity>
+
 }

@@ -1,6 +1,5 @@
 package com.example.facerecognition.dialog
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class AttendanceConfirmationDialog() : DialogFragment() {
+class AttendanceConfirmationDialog : DialogFragment() {
 
     private lateinit var binding: DialogAttendanceConfirmationBinding
     var registeredFace: RegisteredFace? = null
@@ -26,9 +25,7 @@ class AttendanceConfirmationDialog() : DialogFragment() {
     private val roomHelper = RoomHelper()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         binding = DialogAttendanceConfirmationBinding.inflate(inflater, container, false)
         val dialogView = binding.root
@@ -37,7 +34,6 @@ class AttendanceConfirmationDialog() : DialogFragment() {
         dialogView.setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.transparent))
 
         return dialogView
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,6 +43,14 @@ class AttendanceConfirmationDialog() : DialogFragment() {
 
         binding.buttonTurnOffAttendanceMode.setOnClickListener {
             turnOffAttendanceModeListener?.invoke()
+        }
+
+        binding.buttonSaveAttendance.setOnClickListener {
+            saveAttendance(true)  // true for clock in
+        }
+
+        binding.buttonclockoutfAttendanceMode.setOnClickListener {
+            saveAttendance(false)  // false for clock out
         }
     }
 
@@ -58,29 +62,29 @@ class AttendanceConfirmationDialog() : DialogFragment() {
     fun setData() {
         binding.textViewStudentName.text = registeredFace?.name
         binding.textViewStudentMatric.text = registeredFace?.matric
-        binding.textViewProbability.text = "Probability: ${score}"
-        binding.buttonSaveAttendance.setOnClickListener {
-//            dismiss()
-            saveAttendance()
-        }
+        binding.textViewProbability.text = "Probability: $score"
     }
 
     fun setOnTurnOffAttendanceModeListener(listener: () -> Unit) {
         this.turnOffAttendanceModeListener = listener
     }
 
-    private fun saveAttendance() {
+    private fun saveAttendance(isClockIn: Boolean) {
         registeredFace?.let {
             CoroutineScope(Dispatchers.IO).launch {
-                roomHelper.inserrAttendance(AttendanceEntity(id = 0, studentMatrics =it.matric, attendanceDate = System.currentTimeMillis()))
-
+                val attendanceType = if (isClockIn) "IN" else "OUT"
+                roomHelper.insertAttendance(
+                    AttendanceEntity(
+                        id = 0,
+                        studentMatrics = it.matric,
+                        attendanceDate = System.currentTimeMillis(),
+                        type = attendanceType
+                    )
+                )
                 withContext(Dispatchers.Main) {
                     this@AttendanceConfirmationDialog.dismiss()
                 }
             }
         }
     }
-
-
-
 }

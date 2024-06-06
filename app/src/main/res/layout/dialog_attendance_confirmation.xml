@@ -54,7 +54,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="32dp"
-            android:text="Save Attendance"
+            android:text="Save Attendance to clock in"
             android:textColor="@color/white"
             android:backgroundTint="@color/blue"
             app:layout_constraintTop_toBottomOf="@id/textViewProbability"
@@ -63,14 +63,32 @@
 
             />
 
-        <com.google.android.material.button.MaterialButton
+
+         <com.google.android.material.button.MaterialButton
+             android:id="@+id/buttonclockoutfAttendanceMode"
+             android:layout_width="0dp"
+             android:layout_height="wrap_content"
+             android:layout_marginHorizontal="16dp"
+             android:layout_marginTop="8dp"
+             android:layout_marginBottom="32dp"
+             android:backgroundTint="@color/light_blue"
+             android:text="save attendace to clock out"
+             android:textColor="@color/blue"
+             android:textStyle="italic"
+             app:layout_constraintBottom_toBottomOf="parent"
+             app:layout_constraintEnd_toEndOf="parent"
+             app:layout_constraintStart_toStartOf="parent"
+             app:layout_constraintTop_toBottomOf="@id/buttonSaveAttendance"
+             app:layout_constraintVertical_bias="0.0" />
+
+         <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonTurnOffAttendanceMode"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="@color/blue"
-            android:backgroundTint="@color/light_blue"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/dark_gray"
             android:textStyle="italic"
-            app:layout_constraintTop_toBottomOf="@id/buttonSaveAttendance"
+            app:layout_constraintTop_toBottomOf="@id/buttonclockoutfAttendanceMode"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

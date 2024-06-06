@@ -98,12 +98,16 @@ class RoomHelper {
         }
     }
 
-    suspend fun getAttendantListByMatrics(matrics: String): List<AttendanceWithStudentEntity> {
-        return database.attendanceDao().getAttendanceListByMatrics(matrics)
+    suspend fun getAttendantListByMatrics(matrics: String): List<AttendanceEntity> {
+        return database.attendanceDao().getAttendantListByMatrics(matrics)
     }
 
     suspend fun updateStudentName(matric: String, name: String) {
         attendanceDao.updateStudentName(matric, name)
+    }
+
+    suspend fun insertAttendance(attendance: AttendanceEntity) {
+        database.attendanceDao().insertAttendance(attendance)
     }
 
 

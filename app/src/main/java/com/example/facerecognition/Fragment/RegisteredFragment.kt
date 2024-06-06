@@ -11,11 +11,11 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.facerecognition.Activity.DetailActivity
 import com.example.facerecognition.Entity.RegisteredFace
 import com.example.facerecognition.FaceRecognitionHelper
 import com.example.facerecognition.Helper.RoomHelper
 import com.example.facerecognition.R
+import com.example.facerecognition.activity.DetailActivity
 import com.example.facerecognition.adapter.RegisteredFaceAdapter
 import com.example.facerecognition.databinding.FragmentRegisteredBinding
 import com.example.facerecognition.sumarise.SummariseActivity

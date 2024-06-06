@@ -1,4 +1,4 @@
-package com.example.facerecognition.Activity
+package com.example.facerecognition.activity
 
 import android.net.Uri
 import android.os.Build
@@ -53,18 +53,18 @@ class DetailActivity : AppCompatActivity() {
             CoroutineScope(Dispatchers.IO).launch {
                 val attendants = roomHelper.getAttendantListByMatrics(data.matric)
                 withContext(Dispatchers.Main) {
-                    val inAttendances = attendants.filterIndexed { index, _ -> (index + 1) % 2 != 0 }
-                    val outAttendances = attendants.filterIndexed { index, _ -> (index + 1) % 2 == 0 }
+                    val inAttendances = attendants.filter { it.type == "IN" }
+                    val outAttendances = attendants.filter { it.type == "OUT" }
 
                     binding.detailAttendance.text = inAttendances.mapIndexed { index, it ->
-                        val formattedDate = roomHelper.convertDate(it.attendanceEntity.attendanceDate)
-                        val formattedHour = roomHelper.convertHour(it.attendanceEntity.attendanceDate)
+                        val formattedDate = roomHelper.convertDate(it.attendanceDate)
+                        val formattedHour = roomHelper.convertHour(it.attendanceDate)
                         "No ${index + 1}:  |      Date: $formattedDate  |    Hour : $formattedHour"
                     }.joinToString("\n")
 
                     binding.detailOutattendance.text = outAttendances.mapIndexed { index, it ->
-                        val formattedDate = roomHelper.convertDate(it.attendanceEntity.attendanceDate)
-                        val formattedHour = roomHelper.convertHour(it.attendanceEntity.attendanceDate)
+                        val formattedDate = roomHelper.convertDate(it.attendanceDate)
+                        val formattedHour = roomHelper.convertHour(it.attendanceDate)
                         "No ${index + 1}:  |      Date: $formattedDate  |    Hour : $formattedHour"
                     }.joinToString("\n")
 

@@ -12,7 +12,9 @@ data class AttendanceEntity(
     @ColumnInfo(name = "student_matrics")
     val studentMatrics: String,
     @ColumnInfo(name = "attendance_date")
-    val attendanceDate: Long
+    val attendanceDate: Long,
+    @ColumnInfo(name = "type")
+    val type: String
 ){
     fun getAttendanceDateAsDate(): Date {
         return Date(attendanceDate)
