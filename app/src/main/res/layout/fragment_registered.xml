@@ -28,17 +28,23 @@
             style="@style/SearchViewStyle" />
     </androidx.cardview.widget.CardView>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/faceListRecyclerView"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
         android:layout_width="0dp"
         android:layout_height="0dp"
         app:layout_constraintTop_toBottomOf="@+id/cardview_searchbar"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/summarise"
-        android:nestedScrollingEnabled="false"
-        tools:itemCount="10"
-        tools:listitem="@layout/layout_user" />
+        app:layout_constraintBottom_toTopOf="@id/summarise">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/faceListRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="false"
+            tools:itemCount="10"
+            tools:listitem="@layout/layout_user" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/summarise"

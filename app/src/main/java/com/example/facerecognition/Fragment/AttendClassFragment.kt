@@ -73,9 +73,10 @@ class AttendClassFragment : Fragment() {
 
     fun refreshList() {
         CoroutineScope(Dispatchers.IO).launch {
-            val registeredFace = roomHelper.getAttendantList()
+            val registeredFace = roomHelper.getAttendantList().reversed() // Reverse the list
             withContext(Dispatchers.Main) {
                 adapter.setNewList(registeredFace)
+                binding.attendFaceListRecyclerView.scrollToPosition(0)
             }
         }
     }
@@ -85,10 +86,11 @@ class AttendClassFragment : Fragment() {
             binding.attendFaceListRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         }
         roomHelper.init(requireContext())
-        val registeredFace = roomHelper.getAttendantList()
+        val registeredFace = roomHelper.getAttendantList().reversed() // Reverse the list to show latest first
         withContext(Dispatchers.Main) {
             adapter = AttendedFaceRegisterAdapter(roomHelper, registeredFace, requireContext())
             binding.attendFaceListRecyclerView.adapter = adapter
+            binding.attendFaceListRecyclerView.scrollToPosition(0)
         }
     }
 }

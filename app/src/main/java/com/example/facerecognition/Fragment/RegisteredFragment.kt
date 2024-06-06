@@ -78,6 +78,16 @@ class RegisteredFragment(
             checkSdkAndExportToExcel(requireContext())
         }
 
+        // Set up SwipeRefreshLayout
+        binding.swipeRefreshLayout.setOnRefreshListener {
+            CoroutineScope(Dispatchers.IO).launch {
+                showRecyclerList()
+                withContext(Dispatchers.Main) {
+                    binding.swipeRefreshLayout.isRefreshing = false
+                }
+            }
+        }
+
         // Set scroll listener
         binding.faceListRecyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {

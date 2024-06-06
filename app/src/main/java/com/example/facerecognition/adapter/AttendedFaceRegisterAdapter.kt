@@ -41,9 +41,6 @@ class AttendedFaceRegisterAdapter(
             } else {
                 binding.cardviewDecoration.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pastel_coral))
             }
-
-            // Set default image if not available
-          // Replace with your default avatar drawable resource
         }
 
         val tvdelete: ImageButton = binding.attendDeleteButton
@@ -75,7 +72,7 @@ class AttendedFaceRegisterAdapter(
 
     fun setNewList(list: List<AttendanceWithStudentEntity>) {
         listStudents.clear()
-        listStudents.addAll(list)
+        listStudents.addAll(list.reversed()) // Reverse the list to show latest first
         notifyDataSetChanged()
     }
 }
