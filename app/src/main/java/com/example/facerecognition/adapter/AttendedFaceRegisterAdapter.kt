@@ -41,6 +41,9 @@ class AttendedFaceRegisterAdapter(
             } else {
                 binding.cardviewDecoration.setCardBackgroundColor(ContextCompat.getColor(context, R.color.pastel_coral))
             }
+
+            // Set default image if not available
+          // Replace with your default avatar drawable resource
         }
 
         val tvdelete: ImageButton = binding.attendDeleteButton

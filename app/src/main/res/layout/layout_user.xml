@@ -30,7 +30,7 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:src="@drawable/baseline_face_24"
                 app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
-                tools:src="@tools:sample/avatars" />
+                tools:src="@tools:sample/avatars"/>
 
             <TextView
             android:id="@+id/usernameTextView"
