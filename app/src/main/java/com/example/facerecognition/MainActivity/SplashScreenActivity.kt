@@ -3,6 +3,7 @@ package com.example.facerecognition.MainActivity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.example.facerecognition.R
 import com.example.facerecognition.databinding.ActivitySplashScreenBinding
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -20,5 +21,7 @@ class SplashScreenActivity : AppCompatActivity() {
             startActivity(intent)
             finish()
         }, 2000) // 2 seconds delay
+
+        window.statusBarColor = resources.getColor(R.color.sky_blue, theme)
     }
 }

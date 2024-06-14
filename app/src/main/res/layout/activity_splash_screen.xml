@@ -28,7 +28,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:textSize="24sp"
         android:text="Rayhan gibrani uhum"
-        android:fontFamily="@font/ralewayBold"
+        android:fontFamily="@font/raleway"
         android:textStyle="bold"
         android:layout_marginTop="70dp"/>
 
