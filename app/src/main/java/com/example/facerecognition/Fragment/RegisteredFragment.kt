@@ -237,8 +237,12 @@ class RegisteredFragment(
             row.createCell(4).setCellValue(attendanceWithStudent.attendanceEntity.type)
         }
 
+        // Generate a unique file name
+        val timestamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(System.currentTimeMillis())
+        val fileName = "Attendance_$timestamp.xlsx"
+
         // Write the output to a file
-        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "Attendance.xlsx")
+        val file = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName)
         FileOutputStream(file).use { outputStream ->
             workbook.write(outputStream)
             outputStream.close()
