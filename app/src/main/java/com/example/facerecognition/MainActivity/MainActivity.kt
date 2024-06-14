@@ -199,6 +199,7 @@ class MainActivity : AppCompatActivity(), CoroutineScope {
             if (allPermissionGranted())
                 binding.viewFinder.post{
                     setUpCamera()
+
                 }
 
             else
