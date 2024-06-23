@@ -24,10 +24,18 @@ The development of the Android application integrates face recognition technolog
 
 #### One-Time Register Face
 
-![Face Haven't Register](path/to/face_havent_register.png)
-![Input Name and Matric for Register](path/to/input_name_and_matric.png)
+![image](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/e70b3c03-0fb4-41f4-954d-7d5432ed22ca)
 
-This feature allows users to input their name and matric number to register their face seamlessly. The registration process is quick and efficient, taking approximately five seconds after the user inputs their details. The system ensures that only valid face data is captured and provides immediate feedback to the user upon successful registration.
+One of the standout features of this application is the one-time face registration capability, which allows users to input their name and matric number to register their face seamlessly that shown on figure 18. The registration process is designed to be quick and efficient, taking approximately five seconds to complete after the user inputs their details.
+
+![image](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/86d8ca58-1389-4ce1-a5f5-cd716c421ec2)
+
+Face recognition is a key component of this application, leveraging advanced machine learning techniques. The registration process is initiated only when a face is detected by the camera. If no face is detected, the system will reject the registration attempt and prompt the user to retry, ensuring that only valid face data is captured.
+To indicate successful registration, the application displays a notification on the screen confirming that the face has been registered. This feature ensures a smooth and reliable user experience, providing immediate feedback and minimizing the need for repeated attempts.
+
+![image](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/7440a2a9-f7a3-4454-8a4c-f65f8d7f040c)
+
+
 
 #### Attendance Fast and Efficient
 
