@@ -88,11 +88,13 @@ Upon completion of the export process, a pop-up notification will appear on your
 
 This project utilizes the Room library as the primary method for data persistence. Room supports CRUD (Create, Read, Update, Delete) operations, providing a robust framework for managing application data efficiently.
 
-![Data Persistence](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/a903b0bc-41ea-45e1-b658-8097a7563d36)
+![image](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/4e1e3007-de7a-4480-8e69-f6768fee1d69)
+
 
 In this project, two tables are used: the Students Entity and the Attendance Entity.
 
-![Entity Tables](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/49348cbc-07c2-4e03-a5b6-abeee981e9a7)
+![image](https://github.com/RR21-crypto/FYP_FACE_RECOGNITION/assets/81364035/f7c8f46d-5721-41c6-a354-77323cd8f860)
+
 
 These tables are connected using a join operation on the matriculation number, ensuring that each student's records are accurately linked.
 
